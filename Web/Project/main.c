@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    main.c 
+  * @file    main.c
   * @author  STMicroelectronics - System Lab - MC Team
   * @version 4.3.0
   * @date    22-Sep-2016 15:29
@@ -16,19 +16,19 @@
   *
   *        http://www.st.com/software_license_agreement_liberty_v2
   *
-  * Unless required by applicable law or agreed to in writing, software 
-  * distributed under the License is distributed on an "AS IS" BASIS, 
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   * See the License for the specific language governing permissions and
   * limitations under the License.
   *
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 /* Pre-compiler coherency check */
 #define PROJECT_CHK
-#include "CrossCheck.h" 
+#include "CrossCheck.h"
 #undef PROJECT_CHK
 
 #include "MCTuningClass.h"
@@ -50,10 +50,10 @@
 
 #include <stdio.h>
 
-/******************************************************************************/  
+/******************************************************************************/
 /* Electronic Speed Controller (STEVAL-ESC001V1)*/
 #include "STEVAL_ESC001V1.h"
-/******************************************************************************/  
+/******************************************************************************/
 
 #if (defined(USE_STM32303C_EVAL))
 #include "stm32303c_eval.h"
@@ -75,7 +75,7 @@ void STSPIN32F0_Init(void);
 
 #if STM32F3_64MHZ_INT
 void STM32F3_64MHz_Internal(void);
-#endif 
+#endif
 
 #define FIRMWARE_VERS "STM32 FOC SDK\0Ver.4.3.0"
 const char s_fwVer[32] = FIRMWARE_VERS;
@@ -92,18 +92,18 @@ const char s_fwVer[32] = FIRMWARE_VERS;
   void speedmonitor_start(void);
 #endif
 #if defined(EXAMPLE_POTENTIOMETER)
- void potentiometer_start(void);  
-#endif   
+ void potentiometer_start(void);
+#endif
 #if defined(EXAMPLE_RAMP)
   void ramp_start(void);
-#endif   
+#endif
 #if defined(EXAMPLE_PI)
   void NewPIval_start(void);
-#endif    
+#endif
 #if defined(EXAMPLE_CONTROLMODE)
  void TqSpeedMode_start(void);
-#endif 
-    
+#endif
+
 /* Private function prototypes -----------------------------------------------*/
 
 void SysTick_Configuration(void);
@@ -111,12 +111,12 @@ void SysTick_Configuration(void);
 /* Private variables ---------------------------------------------------------*/
 
 CMCI oMCI[MC_NUM];
-CMCT oMCT[MC_NUM];  
+CMCT oMCT[MC_NUM];
 uint32_t wConfig[MC_NUM] = {UI_CONFIG_M1,UI_CONFIG_M2};
 
 
 /* Private macro -------------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/  
+/* Private variables ---------------------------------------------------------*/
 
 /**
   * @brief  Main program.
@@ -124,21 +124,21 @@ uint32_t wConfig[MC_NUM] = {UI_CONFIG_M1,UI_CONFIG_M2};
   * @retval None
   */
 int main(void)
-{    
-  /*!< At this stage the microcontroller clock setting is already configured, 
+{
+  /*!< At this stage the microcontroller clock setting is already configured,
        this is done through SystemInit() function which is called from startup
        file (startup_stm32f10x_xx.s) before to branch to application main.
        To reconfigure the default setting of SystemInit() function, refer to
        system_stm32f10x.c file
      */
-  
+
 #if !defined(STM32F0XX)
   /*NVIC Priority group configuration.
-    Default option is NVIC_PriorityGroup_3. 
+    Default option is NVIC_PriorityGroup_3.
   */
   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_3);
 #endif
-  
+
 #ifdef USE_STGAP1S
   GAPboot();
 #endif
@@ -150,29 +150,29 @@ int main(void)
 #ifdef STSPIN32F0
   STSPIN32F0_Init();
 #endif
-    
+
   /*MCInterface and MCTuning boot*/
   MCboot(oMCI,oMCT);
-  
-/******************************************************************************/  
+
+/******************************************************************************/
  /*Initialization of Electronic Speed Controller (STEVAL-ESC001V1)*/
   ESCboot();
-/******************************************************************************/    
-  
+/******************************************************************************/
+
   #if defined(PFC_ENABLED)
     PFC_Boot(oMCT[0],(CMCT)MC_NULL, (int16_t *)MC_NULL);
   #endif
-    
+
   /*Systick configuration.*/
   SysTick_Configuration();
-  
+
   /* Start here ***************************************************************/
   /* GUI, this section is present only if LCD, DAC or serial communication is */
   /* enabled.                                                                 */
 #if (defined(LCD_FUNCTIONALITY) | defined(DAC_FUNCTIONALITY) | defined(SERIAL_COMMUNICATION))
   UI_TaskInit(UI_INIT_CFG,wConfig,MC_NUM,oMCI,oMCT,s_fwVer);
-#endif  
-  
+#endif
+
 #ifdef ENABLE_START_STOP_BUTTON
   /* Init Key input (Start/Stop button) */
   {
@@ -182,10 +182,10 @@ int main(void)
     GPIO_Init(START_STOP_GPIO_PORT, &GPIO_InitStructure);
   }
 #endif
-  /* End here******************************************************************/  
-  
+  /* End here******************************************************************/
+
   while(1)
-  {        
+  {
 #ifdef SERIAL_COMMUNICATION
     /* Start here ***********************************************************/
     /* GUI, this section is present only if serial communication is enabled.*/
@@ -206,13 +206,13 @@ int main(void)
     /* Start here ***********************************************************/
     /* GUI, this section is present only if LCD or start/stop button is enabled. */
     if (UI_IdleTimeHasElapsed())
-    {  
+    {
       UI_SetIdleTime(UI_TASK_OCCURENCE_TICKS);
-      
+
 #ifdef LCD_FUNCTIONALITY
       UI_LCDRefresh();
 #endif
-      
+
 #ifdef ENABLE_START_STOP_BUTTON
       {
         /* Chek status of Start/Stop button and performs debounce management */
@@ -233,7 +233,7 @@ int main(void)
             MCI_StopMotor(oMCI[M1]);
           }
 #endif
-        
+
 #ifdef DUALDRIVE
           /* Stop both motors */
           MCI_StopMotor(oMCI[M1]);
@@ -248,21 +248,21 @@ int main(void)
         }
       }
 #endif
-      
+
     }
-    /* End here**************************************************************/  
+    /* End here**************************************************************/
 #endif
 
 /********************************   EXAMPLE AREA ******************************/
 #if defined(EXAMPLE_POTENTIOMETER)
-   potentiometer_start();  
-#endif   
+   potentiometer_start();
+#endif
 #if defined(EXAMPLE_RAMP)
    ramp_start();
-#endif   
+#endif
 #if defined(EXAMPLE_PI)
    NewPIval_start();
-#endif    
+#endif
 #if defined(EXAMPLE_CONTROLMODE)
    TqSpeedMode_start();
 #endif
@@ -270,16 +270,16 @@ int main(void)
    speedmonitor_start();
 #endif
 /*****************************************************************************/
-   
+
 #ifdef USE_STGAP1S
    GAPSchedule();
 #endif
-   
-/******************************************************************************/   
+
+/******************************************************************************/
 /* Main routine for Electronic Speed Controller (STEVAL-ESC001V1) */
-  PWM_FC_control(); 
-/******************************************************************************/   
-   
+  PWM_FC_control();
+/******************************************************************************/
+
   }
 }
 /**
@@ -291,11 +291,11 @@ void SysTick_Configuration(void)
 {
   /* Setup SysTick Timer for 500 usec interrupts  */
   if (SysTick_Config((SystemCoreClock) / SYS_TICK_FREQUENCY))
-  { 
-    /* Capture error */ 
+  {
+    /* Capture error */
     while (1);
   }
-  
+
   NVIC_SetPriority(SysTick_IRQn, SYSTICK_PRIORITY);
   NVIC_SetPriority(PendSV_IRQn, PENDSV_PRIORITY);
 }
@@ -306,37 +306,37 @@ void STM32F3_64MHz_Internal()
 #warning "Internal"
   /* Cleaning of Source clock register */
   RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
-  
+
   /* Disable PLL */
   RCC_PLLCmd((FunctionalState)DISABLE);
-  
+
   /* Wait untill PLL is cleared */
   while((RCC->CR & RCC_CR_PLLRDY) == 1)
   {
   }
-  
+
   /* Setting of system clock to 64 MHz */
   RCC_PLLConfig(RCC_PLLSource_HSI_Div2, RCC_PLLMul_16); //8/2*16 = 64MHz
-  
+
   /* Enable PLL */
   RCC_PLLCmd((FunctionalState)ENABLE);
-  
+
   /* Wait till PLL is ready */
   while((RCC->CR & RCC_CR_PLLRDY) == 0)
   {
   }
-  
+
   /* Select PLL as system clock source */
-  RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;    
-  
+  RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;
+
   /* Wait till PLL is used as system clock source */
   while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)RCC_CFGR_SWS_PLL)
   {
   }
-  
+
   /* HSE disabling */
   RCC_HSEConfig(RCC_HSE_OFF);
-  
+
   /* Wait the disabling of HSE */
   while(RCC_GetFlagStatus(RCC_FLAG_HSERDY)==1)
   {
@@ -348,47 +348,47 @@ void STM32F3_64MHz_Internal()
 void STSPIN32F0_Init(void)
 {
 	/** This function is dedicated to the manual setting for STSPIN32F0. **/
-	
+
 	/** Setting of internal clock source **/
-	
+
   /* Cleaning of Source clock register */
   RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
-  
+
   /* Disable PLL */
   RCC_PLLCmd((FunctionalState)DISABLE);
-  
+
   /* Wait untill PLL is cleared */
   while((RCC->CR & RCC_CR_PLLRDY) == 1)
   {
   }
-  
+
   /* Setting of system clock to 48 MHz */
   RCC_PLLConfig(RCC_PLLSource_HSI_Div2, RCC_CFGR_PLLMUL12); //8/2*12 = 48MHz
-  
+
   /* Enable PLL */
   RCC_PLLCmd((FunctionalState)ENABLE);
-  
+
   /* Wait till PLL is ready */
   while((RCC->CR & RCC_CR_PLLRDY) == 0)
   {
   }
-  
+
   /* Select PLL as system clock source */
-  RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;    
-  
+  RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;
+
   /* Wait till PLL is used as system clock source */
   while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)RCC_CFGR_SWS_PLL)
   {
   }
-  
+
   /* HSE disabling */
   RCC_HSEConfig(RCC_HSE_OFF);
-  
+
   /* Wait the disabling of HSE */
   while(RCC_GetFlagStatus(RCC_FLAG_HSERDY)==1)
   {
   }
-  
+
   /** Setting for OC protection th **/
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOF,(FunctionalState) ENABLE);
   GPIO_InitTypeDef GPIO_InitStructure;
@@ -413,7 +413,7 @@ void STSPIN32F0_Init(void)
   * @retval None
   */
 void assert_failed(uint8_t* file, uint32_t line)
-{ 
+{
   /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
