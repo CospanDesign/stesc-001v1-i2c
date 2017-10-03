@@ -89,12 +89,12 @@ void I2C_EV_IRQHandler(void)
 XX  I2C_FLAG_TC (MASTER MODE ONLY)
 XX  I2C_FLAG_TCR (MASTER MODE ONLY ??)
 **  I2C_FLAG_BERR
-I2C_FLAG_ARLO
-I2C_FLAG_OVR
-I2C_FLAG_PECERR
-I2C_FLAG_TIMEOUT
-I2C_FLAG_ALERT
-I2C_FLAG_BUSY
+**  I2C_FLAG_ARLO
+**  I2C_FLAG_OVR
+**  I2C_FLAG_PECERR
+**  I2C_FLAG_TIMEOUT
+**  I2C_FLAG_ALERT
+XX  I2C_FLAG_BUSY
 */
 
   //Transmit Data Register Empty
@@ -299,7 +299,7 @@ void I2C_HWInit(pI2CParams_t pI2CParams)
 
   //Configure the I2C SCL Pin
   GPIO_InitStructure.GPIO_Pin = pI2CParams->i2c_scl_pin;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  GPIO_InitStructure.GPIO_Mode = pI2CParams->i2c_scl_af;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_40MHz;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
@@ -307,7 +307,7 @@ void I2C_HWInit(pI2CParams_t pI2CParams)
 
   //Configure I2C SDA Pin
   GPIO_InitStructure.GPIO_Pin = pI2CParams->i2c_sda_pin;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  GPIO_InitStructure.GPIO_Mode = pI2CParams->i2c_sda_af;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_40MHz;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
@@ -336,8 +336,8 @@ void I2C_HWInit(pI2CParams_t pI2CParams)
   I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
   I2C_InitStructure.I2C_AnalogFilter = I2C_AnalogFilter_Enable;
   I2C_InitStructure.I2C_DigitalFilter = 0x00;
-  I2C_InitStructure.I2C_ClockSpeed = pI2CParams->i2c_speed;
-  I2C_InitStructure.I2C_DutyCycle = I2C_DUTYCYCLE;
+  I2C_InitStructure.I2C_Timing = pI2CParams->i2c_speed;
+//  I2C_InitStructure.I2C_ClockSpeed = pI2CParams->i2c_speed;
   I2C_InitStructure.I2C_OwnAddress1 = pI2CParams->slave_address;
   I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
 
@@ -393,18 +393,6 @@ void* I2C_IRQ_Handler(void* this,unsigned char flags, unsigned short rx_data)
       //PL_ResetTX();
     }
   }
-  if (flags == 2) // Flag 2 = Send overrun error
-  {
-    FCP_SendOverrunMeassage(((_CCOM)this)->Vars_str.parent);
-  }
-  if (flags == 3) // Flag 3 = Send timeout error
-  {
-    FCP_SendTimeoutMeassage(((_CCOM)this)->Vars_str.parent);
-  }
-  if (flags == 4) // Flag 4 = Send ATR message
-  {
-    FCP_SendATRMeassage(((_CCOM)this)->Vars_str.parent);
-  }
   return pRetVal;
 }
 
@@ -415,7 +403,7 @@ void* I2C_IRQ_Handler(void* this,unsigned char flags, unsigned short rx_data)
   */
 static void I2C_StartReceive(CCOM this)
 {
-  I2C_ITConfig(((_CI2C)(((_CCOM)this)->DerivedClass))->pDParams_str->I2Cx, I2C_IT_RXNE, ENABLE);
+  //I2C_ITConfig(((_CI2C)(((_CCOM)this)->DerivedClass))->pDParams_str->I2Cx, I2C_IT_RXNE, ENABLE);
 }
 
 /**
@@ -425,6 +413,6 @@ static void I2C_StartReceive(CCOM this)
   */
 static void I2C_StartTransmit(CCOM this)
 {
-  I2C_ITConfig(((_CI2C)(((_CCOM)this)->DerivedClass))->pDParams_str->I2Cx, I2C_IT_TXE, ENABLE);
+  //I2C_ITConfig(((_CI2C)(((_CCOM)this)->DerivedClass))->pDParams_str->I2Cx, I2C_IT_TXE, ENABLE);
 }
 /******************* (C) COPYRIGHT 2016 STMicroelectronics *****END OF FILE****/

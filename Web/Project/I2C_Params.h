@@ -23,12 +23,51 @@
 //Standard Mode
 #define I2C_SPEED 100000
 
+#define I2C_PERIPHERAL                    I2C1
+#define I2C_CLOCK                         RCC_APB1Periph_I2C1
+                                          
+#define I2C_SCL_PIN                       GPIO_Pin_6
+#define I2C_SCL_GPIO_PORT                 GPIOB
+#define I2C_SCL_GPIO_CLK                  RCC_AHBPeriph_GPIOB
+#define I2C_SCL_AF                        GPIO_AF_4
+                                          
+#define I2C_SDA_PIN                       GPIO_Pin_7
+#define I2C_SDA_GPIO_PORT                 GPIOB
+#define I2C_SDA_GPIO_CLK                  RCC_AHBPeriph_GPIOB
+#define I2C_SDA_AF                        GPIO_AF_4
+
+#define I2C_EV_IRQ                        I2C1_EV_IRQn
+#define I2C_ER_IRQ                        I2C1_ER_IRQn
+
+
+#define I2C_UI_IRQ                        0
+
 
 //I2C Timeouts
 //I2C Speed
 I2CParams_t i2c_params = {
-	.slave_address = I2C_ADDRESS;
-	.i2c_speed = I2C_SPEED;
+  .i2c_peripheral   = I2C_PERIPHERAL
+	.slave_address    = I2C_ADDRESS;
+#if I2C_SPEED == 100000
+	.i2c_speed        = 0xC062121F;
+#else
+	.i2c_speed        = 0xC062121F;
+#endif
+  .i2c_evt_irq      = I2C_EV_IRQ;
+  .i2c_err_irq      = I2C_ER_IRQ;
+
+  .i2c_scl_clk      = I2C_SCL_GPIO_CLK;
+  .i2c_scl_port     = I2C_SCL_PORT;
+  .i2c_scl_pin      = I2C_SCL_PIN;
+  .i2c_scl_af       = I2C_SCL_AF;
+
+
+  .i2c_sda_clk      = I2C_SDA_GPIO_CLK;
+  .i2c_sda_port     = I2C_SDA_PORT;
+  .i2c_sda_pin      = I2C_SDA_PIN;
+  .i2c_scl_af       = I2C_SDA_AF;
+
+  .ui_irq_num       = I2C_UI_IRQ;
 };
 
 

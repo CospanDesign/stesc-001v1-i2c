@@ -169,7 +169,7 @@ int main(void)
   /* Start here ***************************************************************/
   /* GUI, this section is present only if LCD, DAC or serial communication is */
   /* enabled.                                                                 */
-#if (defined(LCD_FUNCTIONALITY) | defined(DAC_FUNCTIONALITY) | defined(SERIAL_COMMUNICATION))
+#if (defined(LCD_FUNCTIONALITY) | defined(DAC_FUNCTIONALITY) | defined(SERIAL_COMMUNICATION) | defined(I2C_COMMUNICATION))
   UI_TaskInit(UI_INIT_CFG,wConfig,MC_NUM,oMCI,oMCT,s_fwVer);
 #endif
 

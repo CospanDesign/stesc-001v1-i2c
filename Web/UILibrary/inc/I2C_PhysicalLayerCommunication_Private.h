@@ -33,6 +33,7 @@ typedef I2CParams_t DParams_t, *pDParams_t;
 
 typedef struct
 {
+  uint8_t state;
   pDParams_t pDParams_str;
 }_CI2C_t, *_CI2C;
 
