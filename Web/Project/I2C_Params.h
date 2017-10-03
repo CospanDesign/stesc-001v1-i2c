@@ -25,12 +25,12 @@
 
 #define I2C_PERIPHERAL                    I2C1
 #define I2C_CLOCK                         RCC_APB1Periph_I2C1
-                                          
+
 #define I2C_SCL_PIN                       GPIO_Pin_6
 #define I2C_SCL_GPIO_PORT                 GPIOB
 #define I2C_SCL_GPIO_CLK                  RCC_AHBPeriph_GPIOB
 #define I2C_SCL_AF                        GPIO_AF_4
-                                          
+
 #define I2C_SDA_PIN                       GPIO_Pin_7
 #define I2C_SDA_GPIO_PORT                 GPIOB
 #define I2C_SDA_GPIO_CLK                  RCC_AHBPeriph_GPIOB

@@ -62,6 +62,7 @@ enum I2C_STATE_ENUM = {
   I2C_READ_ADDR,
   I2C_READ_FROM_MASTER,
   I2C_WRITE_TO_MASTER,
+  I2C_WAIT_FOR_RESPONSE,
   I2C_STOP
 };
 
@@ -176,40 +177,22 @@ XX  I2C_FLAG_BUSY
     i2c_struct->state = I2C_IDLE;
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  if (I2C_GetFlagStatus(I2C, I2C_FLAG_ORE) == SET) /* Overrun error occurs */
+/*
+  if (I2C_GetFlagStatus(I2C, I2C_FLAG_ORE) == SET) // Overrun error occurs
   {
-    /* Send Overrun message */
-    Exec_UI_IRQ_Handler(UI_IRQ_I2C,2,0); /* Flag 2 = Send overrun error*/
-    I2C_ClearFlag(I2C,I2C_FLAG_ORE); /* Clear overrun flag */
+    // Send Overrun message
+    Exec_UI_IRQ_Handler(UI_IRQ_I2C,2,0); // Flag 2 = Send overrun error
+    I2C_ClearFlag(I2C,I2C_FLAG_ORE); // Clear overrun flag
     UI_SerialCommunicationTimeOutStop();
   }
   else if (I2C_GetITStatus(I2C, I2C_IT_TXE) != RESET)
   {
-    Exec_UI_IRQ_Handler(UI_IRQ_I2C,1,0); /* Flag 1 = TX */
+    Exec_UI_IRQ_Handler(UI_IRQ_I2C,1,0); // Flag 1 = TX
   }
-  else /* Valid data have been received */
+  else // Valid data have been received
   {
     uint16_t retVal;
-    retVal = *(uint16_t*)(Exec_UI_IRQ_Handler(UI_IRQ_I2C,0,I2C_ReceiveData(I2C))); /* Flag 0 = RX */
+    retVal = *(uint16_t*)(Exec_UI_IRQ_Handler(UI_IRQ_I2C,0,I2C_ReceiveData(I2C))); // Flag 0 = RX
     if (retVal == 1)
     {
       UI_SerialCommunicationTimeOutStart();
@@ -219,6 +202,11 @@ XX  I2C_FLAG_BUSY
       UI_SerialCommunicationTimeOutStop();
     }
   }
+*/
+}
+
+void I2C_ER_IRQHandler(void)
+{
 }
 
 
@@ -366,32 +354,61 @@ void I2C_HWInit(pI2CParams_t pI2CParams)
 void* I2C_IRQ_Handler(void* this,unsigned char flags, unsigned short rx_data)
 {
   void* pRetVal = MC_NULL;
-  if (flags == 0) // Flag 0 = RX
-  {
-    /* Read one byte from the receive data register */
-    if (((_CCOM)this)->Vars_str.PL_Data.RX.Buffer != MC_NULL &&
-        ((_CCOM)this)->Vars_str.PL_Data.RX.BufferTransfer < ((_CCOM)this)->Vars_str.PL_Data.RX.BufferCount)
-    {
-      ((_CCOM)this)->Vars_str.PL_Data.RX.Buffer[((_CCOM)this)->Vars_str.PL_Data.RX.BufferTransfer++] = (uint16_t)(rx_data & (uint16_t)0x01FF);
+  _CI2C i2c_struct = (_CI2C) GLOBAL_COM->DerivedClass;
+  I2CParams_t * params = i2c_struct->pDParams_str;
 
-      pRetVal = ReceivingFrame(((_CCOM)this)->Vars_str.parent,((_CCOM)this)->Vars_str.PL_Data.RX.Buffer,((_CCOM)this)->Vars_str.PL_Data.RX.BufferTransfer);
-    }
+
+  //This just updates the state
+  switch (flags) {
+    case (I2C_TX_READY):
+      break;
+    case (I2C_RX_AVAILABLE):
+      i2c_struct->state = I2C_READ_FROM_MASTER;
+      break;
+    case (I2C_ADDR_MATCH):
+      i2c_struct->state = I2C_START;
+      break;
+    case (I2C_NACK_DETECT):
+      //XXX: What is a master nack do again??
+      i2c_struct->state = I2C_WRITE_TO_MASTER;
+      break;
+    case (I2C_STOP_DETECT):
+      i2c_struct->state = I2C_STOP;
+      break;
+    case (I2C_ACK_DETECT):
+      //XXX: What is a master nack do again??
+      break;
+    case (I2C_TIMEOUT_DETECT):
+      i2c_struct->state = I2C_IDLE;
+      break;
+    case (I2C_ERROR_DETECT):
+      i2c_struct->state = I2C_IDLE;
+      break;
+    default:
+      break;
   }
-  if (flags == 1) // Flag 1 = TX
-  {
-    /* Write one byte to the transmit data register */
-    I2C_SendData(((_CI2C)(((_CCOM)this)->DerivedClass))->pDParams_str->I2Cx, ((_CCOM)this)->Vars_str.PL_Data.TX.Buffer[((_CCOM)this)->Vars_str.PL_Data.TX.BufferTransfer++]);
 
-    if (((_CCOM)this)->Vars_str.PL_Data.TX.BufferCount <= ((_CCOM)this)->Vars_str.PL_Data.TX.BufferTransfer)
-    {
-      /* Disable the I2C Transfer interrupt */
-      I2C_ITConfig(((_CI2C)(((_CCOM)this)->DerivedClass))->pDParams_str->I2Cx, I2C_IT_TXE, DISABLE);
+  //USART_SendData
+  //USART_SendFrame
 
-      SendingFrame(((_CCOM)this)->Vars_str.parent,((_CCOM)this)->Vars_str.PL_Data.TX.Buffer, ((_CCOM)this)->Vars_str.PL_Data.TX.BufferTransfer);
-
-      //Init communication for next transfer;
-      //PL_ResetTX();
-    }
+  switch (i2c_struct->state){
+    case (I2C_IDLE):
+      break;
+    case (I2C_START):
+      break;
+    case (I2C_READ_ADDR):
+      break;
+    case (I2C_READ_FROM_MASTER):
+      break;
+    case (I2C_WRITE_TO_MASTER):
+      break;
+    case (I2C_WAIT_FOR_RESPONSE):
+      break;
+    case (I2C_STOP):
+      break;
+    default:
+      i2c_struct->state = I2C_IDLE;
+      break;
   }
   return pRetVal;
 }

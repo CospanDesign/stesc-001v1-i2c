@@ -25,6 +25,14 @@
   ******************************************************************************
   */
 
+
+
+#ifdef I2C_COMMUNICATION
+  #undef SERIAL_COMMUNICATION
+  //The next line enables serial communication but there is no option for I2C Communication
+  #define COM_ENABLE |OPT_COM
+#endif
+
 /* Includes ------------------------------------------------------------------*/
 /* Pre-compiler coherency check */
 #define PROJECT_CHK
