@@ -16,8 +16,8 @@
   *
   *        http://www.st.com/software_license_agreement_liberty_v2
   *
-  * Unless required by applicable law or agreed to in writing, software 
-  * distributed under the License is distributed on an "AS IS" BASIS, 
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   * See the License for the specific language governing permissions and
   * limitations under the License.
@@ -28,7 +28,7 @@
 /* Includes ------------------------------------------------------------------*/
 /* Pre-compiler coherency check */
 #define PROJECT_CHK
-#include "CrossCheck.h" 
+#include "CrossCheck.h"
 #undef PROJECT_CHK
 
 #include "MC_Type.h"
@@ -58,9 +58,9 @@
   _CUI_t UIpool[MAX_UI_NUM];
   unsigned char UI_Allocated = 0u;
 #endif
-  
+
 #define CLASS_VARS &((_CUI)this)->Vars_str
-  
+
 #if defined(MOTOR_PROFILER)
 /* Buffer used to store MP info for serial communication */
 #define MPINFODATABUFFERLEN 30 /* Length of the buffer */
@@ -74,7 +74,7 @@ uint8_t MPInfoDataStep4[] = {3, MC_PROTOCOL_REG_SC_RS, MC_PROTOCOL_REG_SC_LS, MC
 uint8_t MPInfoDataStep5[] = {1, MC_PROTOCOL_REG_SC_KE};
 uint8_t MPInfoDataStep6[] = {1, MC_PROTOCOL_REG_SC_MEAS_NOMINALSPEED};
 uint8_t MPInfoDataStep14[] = {2, MC_PROTOCOL_REG_SC_J, MC_PROTOCOL_REG_SC_F};
-  
+
 static void MPInfoStep(uint8_t step, pMPInfo_t pMPInfoStep);
 static void CreateMPInfoBuffer(pMPInfo_t stepList, pMPInfo_t pMPInfo);
 #endif
@@ -87,7 +87,7 @@ static void CreateMPInfoBuffer(pMPInfo_t stepList, pMPInfo_t pMPInfo);
 CUI UI_NewObject(pUserInterfaceParams_t pUserInterfaceParams)
 {
   _CUI _oUI;
-  
+
   #ifdef MC_CLASS_DYNAMIC
     _oUI = (_CUI)calloc(1u,sizeof(_CUI_t));
   #else
@@ -100,9 +100,9 @@ CUI UI_NewObject(pUserInterfaceParams_t pUserInterfaceParams)
       _oUI = MC_NULL;
     }
   #endif
-  
+
   _oUI->pParams_str = (pParams_t)pUserInterfaceParams;
-  
+
   return ((CUI)_oUI);
 }
 
@@ -116,8 +116,8 @@ CUI UI_NewObject(pUserInterfaceParams_t pUserInterfaceParams)
   *         with the UI.
   * @param  pMCT is the pointer of the list of MC tuning objects to be linked
   *         with the UI.
-  * @param  pUICfg is the pointer of the user interface configuration list. Each 
-  *         element of the list must be a bit field containing one (or more) of 
+  * @param  pUICfg is the pointer of the user interface configuration list. Each
+  *         element of the list must be a bit field containing one (or more) of
   *         the exported configuration option UI_CFGOPT_xxx (eventually OR-ed).
   * @retval none.
   */
@@ -164,12 +164,12 @@ uint8_t UI_GetSelectedMC(CUI this)
 }
 
 /**
-  * @brief  It is used to retrive the configuration of the MC on which UI 
+  * @brief  It is used to retrive the configuration of the MC on which UI
   *         currently operates.
   * @param  this related object of class CUI.
-  * @retval uint16_t It returns the currently configuration of selected MC on 
+  * @retval uint16_t It returns the currently configuration of selected MC on
   *         which UI operates.
-  *         It represents a bit field containing one (or more) of 
+  *         It represents a bit field containing one (or more) of
   *         the exported configuration option UI_CFGOPT_xxx (eventually OR-ed).
   */
 uint32_t UI_GetSelectedMCConfig(CUI this)
@@ -194,7 +194,7 @@ CMCT UI_GetCurrentMCT(CUI this)
 /**
   * @brief  It is used to execute a SetReg command coming from the user.
   * @param  this related object of class CUI.
-  * @param  bRegID Code of register to be updated. Valid code is one of the 
+  * @param  bRegID Code of register to be updated. Valid code is one of the
   *         MC_PROTOCOL_REG_xxx values exported by UserOnterfaceClass.
   * @param  wValue is the new value to be set.
   * @retval uint8_t It returns the currently selected MC, zero based, on which
@@ -226,28 +226,28 @@ bool UI_SetReg(CUI this, MC_Protocol_REG_t bRegID, int32_t wValue)
       }
     }
     break;
-      
+
   case MC_PROTOCOL_REG_SPEED_KP:
     {
       CPI oPI = MCT_GetSpeedLoopPID(oMCT);
       PI_SetKP(oPI,(int16_t)wValue);
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SPEED_KI:
     {
       CPI oPI = MCT_GetSpeedLoopPID(oMCT);
       PI_SetKI(oPI,(int16_t)wValue);
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SPEED_KD:
     {
       CPI oPI = MCT_GetSpeedLoopPID(oMCT);
       PID_SetKD((CPID_PI)oPI,(int16_t)wValue);
     }
     break;
-    
+
   case MC_PROTOCOL_REG_TORQUE_REF:
     {
       Curr_Components currComp;
@@ -256,28 +256,28 @@ bool UI_SetReg(CUI this, MC_Protocol_REG_t bRegID, int32_t wValue)
       MCI_SetCurrentReferences(oMCI,currComp);
     }
     break;
-    
+
   case MC_PROTOCOL_REG_TORQUE_KP:
     {
       CPI oPI = MCT_GetIqLoopPID(oMCT);
       PI_SetKP(oPI,(int16_t)wValue);
     }
     break;
-    
+
   case MC_PROTOCOL_REG_TORQUE_KI:
     {
       CPI oPI = MCT_GetIqLoopPID(oMCT);
       PI_SetKI(oPI,(int16_t)wValue);
     }
     break;
-    
+
   case MC_PROTOCOL_REG_TORQUE_KD:
     {
       CPI oPI = MCT_GetIqLoopPID(oMCT);
       PID_SetKD((CPID_PI)oPI,(int16_t)wValue);
     }
     break;
-    
+
   case MC_PROTOCOL_REG_FLUX_REF:
     {
       Curr_Components currComp;
@@ -286,28 +286,28 @@ bool UI_SetReg(CUI this, MC_Protocol_REG_t bRegID, int32_t wValue)
       MCI_SetCurrentReferences(oMCI,currComp);
     }
     break;
-    
+
   case MC_PROTOCOL_REG_FLUX_KP:
     {
       CPI oPI = MCT_GetIdLoopPID(oMCT);
       PI_SetKP(oPI,(int16_t)wValue);
     }
     break;
-    
+
   case MC_PROTOCOL_REG_FLUX_KI:
     {
       CPI oPI = MCT_GetIdLoopPID(oMCT);
       PI_SetKI(oPI,(int16_t)wValue);
     }
     break;
-    
+
   case MC_PROTOCOL_REG_FLUX_KD:
     {
       CPI oPI = MCT_GetIdLoopPID(oMCT);
       PID_SetKD((CPID_PI)oPI,(int16_t)wValue);
     }
     break;
-    
+
   case MC_PROTOCOL_REG_OBSERVER_C1:
     {
       uint32_t hUICfg = pVars->pUICfg[pVars->bSelectedDrive];
@@ -349,7 +349,7 @@ bool UI_SetReg(CUI this, MC_Protocol_REG_t bRegID, int32_t wValue)
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_OBSERVER_C2:
     {
       uint32_t hUICfg = pVars->pUICfg[pVars->bSelectedDrive];
@@ -370,7 +370,7 @@ bool UI_SetReg(CUI this, MC_Protocol_REG_t bRegID, int32_t wValue)
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_OBSERVER_CR_C2:
     {
       uint32_t hUICfg = pVars->pUICfg[pVars->bSelectedDrive];
@@ -391,7 +391,7 @@ bool UI_SetReg(CUI this, MC_Protocol_REG_t bRegID, int32_t wValue)
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_PLL_KI:
     {
       uint32_t hUICfg = pVars->pUICfg[pVars->bSelectedDrive];
@@ -412,7 +412,7 @@ bool UI_SetReg(CUI this, MC_Protocol_REG_t bRegID, int32_t wValue)
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_PLL_KP:
 {
       uint32_t hUICfg = pVars->pUICfg[pVars->bSelectedDrive];
@@ -431,23 +431,23 @@ bool UI_SetReg(CUI this, MC_Protocol_REG_t bRegID, int32_t wValue)
         STO_GetPLLGains((CSTO_SPD)oSPD,&hPgain,&hIgain);
         STO_SetPLLGains((CSTO_SPD)oSPD,(int16_t)wValue,hIgain);
       }
-    }    
+    }
     break;
-    
+
   case MC_PROTOCOL_REG_FLUXWK_KP:
     {
       CPI oPI = MCT_GetFluxWeakeningLoopPID(oMCT);
       PI_SetKP(oPI,(int16_t)wValue);
     }
     break;
-    
+
   case MC_PROTOCOL_REG_FLUXWK_KI:
     {
       CPI oPI = MCT_GetFluxWeakeningLoopPID(oMCT);
       PI_SetKI(oPI,(int16_t)wValue);
     }
     break;
-    
+
   case MC_PROTOCOL_REG_FLUXWK_BUS:
     {
       CFW oFW = MCT_GetFluxWeakeningCtrl(oMCT);
@@ -457,13 +457,13 @@ bool UI_SetReg(CUI this, MC_Protocol_REG_t bRegID, int32_t wValue)
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_IQ_SPEEDMODE:
     {
       MCI_SetIdref(oMCI,(int16_t)wValue);
     }
     break;
-    
+
   case MC_PROTOCOL_REG_FF_1Q:
     {
       FF_TuningStruct_t sNewConstants;
@@ -473,7 +473,7 @@ bool UI_SetReg(CUI this, MC_Protocol_REG_t bRegID, int32_t wValue)
       FF_SetFFConstants(oFF,sNewConstants);
     }
     break;
-    
+
   case MC_PROTOCOL_REG_FF_1D:
     {
       FF_TuningStruct_t sNewConstants;
@@ -483,7 +483,7 @@ bool UI_SetReg(CUI this, MC_Protocol_REG_t bRegID, int32_t wValue)
       FF_SetFFConstants(oFF,sNewConstants);
     }
     break;
-    
+
   case MC_PROTOCOL_REG_FF_2:
     {
       FF_TuningStruct_t sNewConstants;
@@ -493,13 +493,13 @@ bool UI_SetReg(CUI this, MC_Protocol_REG_t bRegID, int32_t wValue)
       FF_SetFFConstants(oFF,sNewConstants);
     }
     break;
-    
+
   case MC_PROTOCOL_REG_RAMP_FINAL_SPEED:
     {
       MCI_ExecSpeedRamp(oMCI,(int16_t)(wValue/6),0);
     }
     break;
-    
+
 #if defined(PFC_ENABLED)
   case MC_PROTOCOL_REG_PFC_DCBUS_REF:
     {
@@ -603,37 +603,37 @@ bool UI_SetReg(CUI this, MC_Protocol_REG_t bRegID, int32_t wValue)
     }
     break;
 #endif
-    
+
 #if defined(MOTOR_PROFILER)
   case MC_PROTOCOL_REG_SC_PP:
     {
       CSPD oSPD = MCT_GetSpeednPosSensorMain(oMCT);
       CSCC oSCC = MCT_GetSelfCommissioning(oMCT);
       COTT oOTT = MCT_GetOneTouchTuning(oMCT);
-      
+
       if (oSPD != MC_NULL)
       {
         SPD_SetElToMecRatio(oSPD,(uint8_t)wValue);
       }
-      
+
       oSPD = MCT_GetSpeednPosSensorVirtual(oMCT);
       if (oSPD != MC_NULL)
       {
         SPD_SetElToMecRatio(oSPD,(uint8_t)wValue);
       }
-      
+
       if (oSCC != MC_NULL)
       {
         SCC_SetPolesPairs(oSCC,(uint8_t)wValue);
       }
-      
+
       if (oOTT != MC_NULL)
       {
         OTT_SetPolesPairs(oOTT, (uint8_t)wValue);
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_CURRENT:
     {
       float fCurrent = *(float*)(&wValue);
@@ -644,48 +644,48 @@ bool UI_SetReg(CUI this, MC_Protocol_REG_t bRegID, int32_t wValue)
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_SPDBANDWIDTH:
     {
       float fBW = *(float*)(&wValue);
       COTT oOTT = MCT_GetOneTouchTuning(oMCT);
-      
+
       if (oOTT != MC_NULL)
       {
         OTT_SetSpeedRegulatorBandwidth(oOTT, fBW);
       }
-      
+
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_LDLQRATIO:
     {
       float fLdLqRatio = *(float*)(&wValue);
       CSCC oSCC = MCT_GetSelfCommissioning(oMCT);
-      
+
       if (oSCC != MC_NULL)
       {
         SCC_SetLdLqRatio(oSCC, fLdLqRatio);
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_NOMINAL_SPEED:
     {
       CSCC oSCC = MCT_GetSelfCommissioning(oMCT);
-      
+
       if (oSCC != MC_NULL)
       {
         SCC_SetNominalSpeed(oSCC, wValue);
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_CURRBANDWIDTH:
     {
       float fBW = *(float*)(&wValue);
       CSCC oSCC = MCT_GetSelfCommissioning(oMCT);
-      
+
       if (oSCC != MC_NULL)
       {
         SCC_SetCurrentBandwidth(oSCC, fBW);
@@ -693,19 +693,19 @@ bool UI_SetReg(CUI this, MC_Protocol_REG_t bRegID, int32_t wValue)
     }
     break;
 #endif
-  
+
   default:
     retVal = FALSE;
     break;
   }
-  
+
   return retVal;
 }
 
 /**
   * @brief  It is used to execute a GetReg command coming from the user.
   * @param  this related object of class CUI.
-  * @param  bRegID Code of register to be updated. Valid code is one of the 
+  * @param  bRegID Code of register to be updated. Valid code is one of the
   *         MC_PROTOCOL_REG_xxx values exported by UserInterfaceClass.
   * @retval int32_t is the current value of register bRegID.
   */
@@ -714,7 +714,7 @@ int32_t UI_GetReg(CUI this, MC_Protocol_REG_t bRegID)
   pVars_t pVars = CLASS_VARS;
   CMCT oMCT = pVars->pMCT[pVars->bSelectedDrive];
   CMCI oMCI = pVars->pMCI[pVars->bSelectedDrive];
-  
+
   int32_t bRetVal = (int32_t)GUI_ERROR_CODE;
   switch (bRegID)
   {
@@ -778,7 +778,7 @@ int32_t UI_GetReg(CUI this, MC_Protocol_REG_t bRegID)
   case MC_PROTOCOL_REG_TORQUE_REF:
     {
       Curr_Components currComp;
-      currComp = MCI_GetIqdref(oMCI);      
+      currComp = MCI_GetIqdref(oMCI);
       bRetVal = (int32_t)currComp.qI_Component1;
     }
     break;
@@ -801,10 +801,10 @@ int32_t UI_GetReg(CUI this, MC_Protocol_REG_t bRegID)
     }
     break;
   case MC_PROTOCOL_REG_FLUX_REF:
-  case MC_PROTOCOL_REG_IQ_SPEEDMODE: 
+  case MC_PROTOCOL_REG_IQ_SPEEDMODE:
     {
       Curr_Components currComp;
-      currComp = MCI_GetIqdref(oMCI);      
+      currComp = MCI_GetIqdref(oMCI);
       bRetVal = (int32_t)currComp.qI_Component2;
     }
     break;
@@ -1369,7 +1369,7 @@ int32_t UI_GetReg(CUI this, MC_Protocol_REG_t bRegID)
       {
         bRetVal = (((_CUI)this)->Methods_str.pUI_DACGetUserChannelValue)
                   (this, 0);
-      } 
+      }
       else
       {
         bRetVal = 0;
@@ -1382,7 +1382,7 @@ int32_t UI_GetReg(CUI this, MC_Protocol_REG_t bRegID)
       {
         bRetVal = (((_CUI)this)->Methods_str.pUI_DACGetUserChannelValue)
                   (this, 1);
-      } 
+      }
       else
       {
         bRetVal = 0;
@@ -1452,7 +1452,7 @@ int32_t UI_GetReg(CUI this, MC_Protocol_REG_t bRegID)
       if (oSPD != MC_NULL)
       {
         bRetVal = STO_CR_GetEstimatedBemfLevel((CSTO_CR_SPD)oSPD) >> 16;
-      }      
+      }
     }
     break;
   case MC_PROTOCOL_REG_OBS_CR_BEMF_LEVEL:
@@ -1470,7 +1470,7 @@ int32_t UI_GetReg(CUI this, MC_Protocol_REG_t bRegID)
       if (oSPD != MC_NULL)
       {
         bRetVal = STO_CR_GetObservedBemfLevel((CSTO_CR_SPD)oSPD) >> 16;
-      }      
+      }
     }
     break;
   case MC_PROTOCOL_REG_FF_1Q:
@@ -1690,14 +1690,14 @@ case MC_PROTOCOL_REG_RAMP_FINAL_SPEED:
     }
     break;
 #endif
-    
+
 #if defined(MOTOR_PROFILER)
   case MC_PROTOCOL_REG_SC_CHECK:
     {
       bRetVal = 1;
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_STATE:
     {
       uint8_t state = 0;
@@ -1714,7 +1714,7 @@ case MC_PROTOCOL_REG_RAMP_FINAL_SPEED:
       bRetVal = (int32_t)(state);
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_STEPS:
     {
       uint8_t state = 0;
@@ -1731,7 +1731,7 @@ case MC_PROTOCOL_REG_RAMP_FINAL_SPEED:
       bRetVal = (int32_t)(state - 1u);
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_RS:
     {
       CSCC oSCC = MCT_GetSelfCommissioning(oMCT);
@@ -1741,7 +1741,7 @@ case MC_PROTOCOL_REG_RAMP_FINAL_SPEED:
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_LS:
     {
       CSCC oSCC = MCT_GetSelfCommissioning(oMCT);
@@ -1751,7 +1751,7 @@ case MC_PROTOCOL_REG_RAMP_FINAL_SPEED:
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_KE:
     {
       CSCC oSCC = MCT_GetSelfCommissioning(oMCT);
@@ -1761,7 +1761,7 @@ case MC_PROTOCOL_REG_RAMP_FINAL_SPEED:
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_VBUS:
     {
       CSCC oSCC = MCT_GetSelfCommissioning(oMCT);
@@ -1771,7 +1771,7 @@ case MC_PROTOCOL_REG_RAMP_FINAL_SPEED:
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_MEAS_NOMINALSPEED:
     {
       COTT oOTT = MCT_GetOneTouchTuning(oMCT);
@@ -1781,7 +1781,7 @@ case MC_PROTOCOL_REG_RAMP_FINAL_SPEED:
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_PP:
     {
       CSPD oSPD = MCT_GetSpeednPosSensorMain(oMCT);
@@ -1791,67 +1791,67 @@ case MC_PROTOCOL_REG_RAMP_FINAL_SPEED:
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_CURRENT:
     {
       CSCC oSCC = MCT_GetSelfCommissioning(oMCT);
-            
+
       if (oSCC != MC_NULL)
       {
         bRetVal = MCM_floatToIntBit(SCC_GetNominalCurrent(oSCC));
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_SPDBANDWIDTH:
     {
       COTT oOTT = MCT_GetOneTouchTuning(oMCT);
-      
+
       if (oOTT != MC_NULL)
       {
         bRetVal = MCM_floatToIntBit(OTT_GetSpeedRegulatorBandwidth(oOTT));
       }
-      
+
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_LDLQRATIO:
     {
       CSCC oSCC = MCT_GetSelfCommissioning(oMCT);
-      
+
       if (oSCC != MC_NULL)
       {
         bRetVal = MCM_floatToIntBit(SCC_GetLdLqRatio(oSCC));
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_NOMINAL_SPEED:
     {
       CSCC oSCC = MCT_GetSelfCommissioning(oMCT);
-      
+
       if (oSCC != MC_NULL)
       {
         bRetVal = SCC_GetNominalSpeed(oSCC);
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_CURRBANDWIDTH:
     {
       CSCC oSCC = MCT_GetSelfCommissioning(oMCT);
-      
+
       if (oSCC != MC_NULL)
       {
         bRetVal = MCM_floatToIntBit(SCC_GetCurrentBandwidth(oSCC));
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_J:
     {
       COTT oOTT = MCT_GetOneTouchTuning(oMCT);
-      
+
       if (oOTT != MC_NULL)
       {
         bRetVal = MCM_floatToIntBit(OTT_GetJ(oOTT));
@@ -1861,7 +1861,7 @@ case MC_PROTOCOL_REG_RAMP_FINAL_SPEED:
   case MC_PROTOCOL_REG_SC_F:
     {
       COTT oOTT = MCT_GetOneTouchTuning(oMCT);
-      
+
       if (oOTT != MC_NULL)
       {
         bRetVal = MCM_floatToIntBit(OTT_GetF(oOTT));
@@ -1871,58 +1871,58 @@ case MC_PROTOCOL_REG_RAMP_FINAL_SPEED:
   case MC_PROTOCOL_REG_SC_MAX_CURRENT:
     {
       CSCC oSCC = MCT_GetSelfCommissioning(oMCT);
-      
+
       if (oSCC != MC_NULL)
       {
         bRetVal = MCM_floatToIntBit(SCC_GetStartupCurrentAmp(oSCC));
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_STARTUP_SPEED:
     {
       CSCC oSCC = MCT_GetSelfCommissioning(oMCT);
-      
+
       if (oSCC != MC_NULL)
       {
         bRetVal = (int32_t)(SCC_GetEstMaxOLSpeed(oSCC));
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_STARTUP_ACC:
     {
       CSCC oSCC = MCT_GetSelfCommissioning(oMCT);
-      
+
       if (oSCC != MC_NULL)
       {
         bRetVal = (int32_t)(SCC_GetEstMaxAcceleration(oSCC));
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_PWM_FREQUENCY:
     {
       CSCC oSCC = MCT_GetSelfCommissioning(oMCT);
-      
+
       if (oSCC != MC_NULL)
       {
         bRetVal = (int32_t)SCC_GetPWMFrequencyHz(oSCC);
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_FOC_REP_RATE:
     {
       CSCC oSCC = MCT_GetSelfCommissioning(oMCT);
-      
+
       if (oSCC != MC_NULL)
       {
         bRetVal = (int32_t)SCC_GetFOCRepRate(oSCC);
       }
     }
     break;
-    
+
   case MC_PROTOCOL_REG_SC_COMPLETED:
     {
       COTT oOTT = MCT_GetOneTouchTuning(oMCT);
@@ -1933,27 +1933,27 @@ case MC_PROTOCOL_REG_RAMP_FINAL_SPEED:
       }
     }
     break;
-    
-#endif    
+
+#endif
 
   case MC_PROTOCOL_REG_UID:
     {
       bRetVal = (int32_t)(UID);
     }
     break;
-      
+
   case MC_PROTOCOL_REG_CTRBDID:
     {
       bRetVal = CTRBDID;
     }
     break;
-    
+
   case MC_PROTOCOL_REG_PWBDID:
     {
       bRetVal = PWBDID;
     }
     break;
-    
+
   case MC_PROTOCOL_REG_PWBDID2:
     {
 #ifdef DUALDRIVE
@@ -1963,7 +1963,7 @@ case MC_PROTOCOL_REG_RAMP_FINAL_SPEED:
 #endif
     }
     break;
-    
+
   default:
     break;
   }
@@ -1973,9 +1973,9 @@ case MC_PROTOCOL_REG_RAMP_FINAL_SPEED:
 /**
   * @brief  It is used to execute a command coming from the user.
   * @param  this related object of class CUI.
-  * @param  bCmdID Code of register to be updated. Valid code is one of the 
+  * @param  bCmdID Code of register to be updated. Valid code is one of the
   *         MC_PROTOCOL_CMD_xxx define exported by UserInterfaceClass.
-  * @retval bool It returns true if the command has been performed 
+  * @retval bool It returns true if the command has been performed
   *         succesfully otherwise returns false.
 */
 bool UI_ExecCmd(CUI this, uint8_t bCmdID)
@@ -1983,7 +1983,7 @@ bool UI_ExecCmd(CUI this, uint8_t bCmdID)
   bool retVal = TRUE;
   pVars_t pVars = CLASS_VARS;
   CMCI oMCI = pVars->pMCI[pVars->bSelectedDrive];
-  
+
   switch (bCmdID)
   {
   case MC_PROTOCOL_CMD_START_MOTOR:
@@ -2051,7 +2051,7 @@ bool UI_ExecCmd(CUI this, uint8_t bCmdID)
       MCI_Clear_Iqdref(oMCI);
     }
     break;
-#if defined(PFC_ENABLED)  
+#if defined(PFC_ENABLED)
   case MC_PROTOCOL_CMD_PFC_ENABLE:
     {
       if ((pVars->pUICfg[pVars->bSelectedDrive] & UI_CFGOPT_PFC) == 0u)
@@ -2092,7 +2092,7 @@ bool UI_ExecCmd(CUI this, uint8_t bCmdID)
     }
     break;
 #endif
-    
+
 #if defined(MOTOR_PROFILER)
   case MC_PROTOCOL_CMD_SC_START:
     {
@@ -2125,14 +2125,14 @@ bool UI_ExecCmd(CUI this, uint8_t bCmdID)
   * @param  wFinalMecSpeedRPM final speed value expressed in RPM.
   * @param  hDurationms the duration of the ramp expressed in milliseconds. It
   *         is possible to set 0 to perform an instantaneous change in the value.
-  * @retval bool It returns true if the command has been performed 
+  * @retval bool It returns true if the command has been performed
   *         succesfully otherwise returns false.
   */
 bool UI_ExecSpeedRamp(CUI this, int32_t wFinalMecSpeedRPM, uint16_t hDurationms)
 {
   pVars_t pVars = CLASS_VARS;
   CMCI oMCI = pVars->pMCI[pVars->bSelectedDrive];
-  
+
   /* Call MCI Exec Ramp */
   MCI_ExecSpeedRamp(oMCI,(int16_t)(wFinalMecSpeedRPM/6),hDurationms);
   return TRUE;
@@ -2145,14 +2145,14 @@ bool UI_ExecSpeedRamp(CUI this, int32_t wFinalMecSpeedRPM, uint16_t hDurationms)
             details.
   * @param  hDurationms the duration of the ramp expressed in milliseconds. It
   *         is possible to set 0 to perform an instantaneous change in the value.
-  * @retval bool It returns true if the command has been performed 
+  * @retval bool It returns true if the command has been performed
   *         succesfully otherwise returns false.
   */
 bool UI_ExecTorqueRamp(CUI this, int16_t hTargetFinal, uint16_t hDurationms)
 {
   pVars_t pVars = CLASS_VARS;
   CMCI oMCI = pVars->pMCI[pVars->bSelectedDrive];
-  
+
   /* Call MCI Exec Ramp */
   MCI_ExecTorqueRamp(oMCI,hTargetFinal,hDurationms);
   return TRUE;
@@ -2162,19 +2162,19 @@ bool UI_ExecTorqueRamp(CUI this, int16_t hTargetFinal, uint16_t hDurationms)
   * @brief  It is used to execute a get Revup data command coming from the user.
   * @param  this related object of class CUI.
   * @param  bStage is the rev up phase, zero based, to be read.
-  * @param  pDurationms is the pointer to an uint16_t variable used to retrieve 
+  * @param  pDurationms is the pointer to an uint16_t variable used to retrieve
   *         the duration of the Revup stage.
-  * @param  pFinalMecSpeed01Hz is the pointer to an int16_t variable used to 
+  * @param  pFinalMecSpeed01Hz is the pointer to an int16_t variable used to
   *         retrieve the mechanical speed at the end of that stage expressed in
   *         0.1Hz.
-  * @param  pFinalTorque is the pointer to an int16_t variable used to 
+  * @param  pFinalTorque is the pointer to an int16_t variable used to
   *         retrieve the value of motor torque at the end of that
   *         stage. This value represents actually the Iq current expressed in
   *         digit.
-  * @retval bool It returns true if the command has been performed 
+  * @retval bool It returns true if the command has been performed
   *         succesfully otherwise returns false.
   */
-bool UI_GetRevupData(CUI this, uint8_t bStage, uint16_t* pDurationms, 
+bool UI_GetRevupData(CUI this, uint8_t bStage, uint16_t* pDurationms,
                      int16_t* pFinalMecSpeed01Hz, int16_t* pFinalTorque )
 {
   bool hRetVal = TRUE;
@@ -2199,15 +2199,15 @@ bool UI_GetRevupData(CUI this, uint8_t bStage, uint16_t* pDurationms,
   * @param  this related object of class CUI.
   * @param  bStage is the rev up phase, zero based, to be modified.
   * @param  hDurationms is the new duration of the Revup stage.
-  * @param  hFinalMecSpeed01Hz is the new mechanical speed at the end of that 
+  * @param  hFinalMecSpeed01Hz is the new mechanical speed at the end of that
   *         stage expressed in 0.1Hz.
   * @param  hFinalTorque is the new value of motor torque at the end of that
   *         stage. This value represents actually the Iq current expressed in
   *         digit.
-  * @retval bool It returns true if the command has been performed 
+  * @retval bool It returns true if the command has been performed
   *         succesfully otherwise returns false.
   */
-bool UI_SetRevupData(CUI this, uint8_t bStage, uint16_t hDurationms, 
+bool UI_SetRevupData(CUI this, uint8_t bStage, uint16_t hDurationms,
                      int16_t hFinalMecSpeed01Hz, int16_t hFinalTorque )
 {
   pVars_t pVars = CLASS_VARS;
@@ -2220,12 +2220,12 @@ bool UI_SetRevupData(CUI this, uint8_t bStage, uint16_t hDurationms,
 }
 
 /**
-  * @brief  It is used to execute a set current reference command coming from 
+  * @brief  It is used to execute a set current reference command coming from
   *         the user.
   * @param  this related object of class CUI.
   * @param  hIqRef is the current Iq reference on qd reference frame. This value
-  *         is expressed in digit. To convert current expressed in digit to 
-  *         current expressed in Amps is possible to use the formula: 
+  *         is expressed in digit. To convert current expressed in digit to
+  *         current expressed in Amps is possible to use the formula:
   *         Current(Amp) = [Current(digit) * Vdd micro] / [65536 * Rshunt * Aop]
   * @param  hIdRef is the current Id reference on qd reference frame. This value
   *         is expressed in digit. See hIqRef param description.
@@ -2323,10 +2323,10 @@ void CreateMPInfoBuffer(pMPInfo_t stepList, pMPInfo_t pMPInfo)
 /**
   * @brief  Function to get information about MP registers available for each
   *         step. PC send to the FW the list of steps to get the available
-  *         registers. The FW returs the list of available registers for that 
+  *         registers. The FW returs the list of available registers for that
   *         steps.
   * @param  stepList List of requested steps.
-  * @param  pMPInfo The returned list of register. 
+  * @param  pMPInfo The returned list of register.
   *         It is populated by this function.
   * @retval TRUE if MP is enabled, FALSE otherwise.
   */
@@ -2341,7 +2341,7 @@ bool UI_GetMPInfo(pMPInfo_t stepList, pMPInfo_t pMPInfo)
 }
 
 /**
-  * @brief  Hardware and software initialization of the DAC object. This is a 
+  * @brief  Hardware and software initialization of the DAC object. This is a
   *         virtual function and is implemented by related object.
   * @param  this related object of class UI. It must be a DACx_UI object casted
   *         to CUI otherwise the DACInit method will have no effect.
@@ -2356,7 +2356,7 @@ void UI_DACInit(CUI this)
 }
 
 /**
-  * @brief  This method is used to update the DAC outputs. The selected 
+  * @brief  This method is used to update the DAC outputs. The selected
   *         variables will be provided in the related output channels. This is a
   *         virtual function and is implemented by related object.
   * @param  this related object of class UI. It must be a DACx_UI object casted
@@ -2377,14 +2377,14 @@ void UI_DACExec(CUI this)
   *         DACExec.
   * @param  this related object of class UI. It must be a DACx_UI object casted
   *         to CUI otherwise the method will have no effect.
-  * @param  bChannel the DAC channel to be programmed. It must be one of the 
+  * @param  bChannel the DAC channel to be programmed. It must be one of the
   *         exported channels Ex. DAC_CH0.
   * @param  bVariable the variables to be provided in out through the selected
-  *         channel. It must be one of the exported UI register Ex. 
+  *         channel. It must be one of the exported UI register Ex.
   *         MC_PROTOCOL_REG_I_A.
   * @retval none.
   */
-void UI_SetDAC(CUI this, DAC_Channel_t bChannel, 
+void UI_SetDAC(CUI this, DAC_Channel_t bChannel,
                          MC_Protocol_REG_t bVariable)
 {
   if (((_CUI)this)->Methods_str.pUI_DACSetChannelConfig)
@@ -2397,10 +2397,10 @@ void UI_SetDAC(CUI this, DAC_Channel_t bChannel,
   * @brief  This method is used to get the current DAC channel selected output.
   * @param  this related object of class UI. It must be a DACx_UI object casted
   *         to CUI otherwise the method will have no effect.
-  * @param  bChannel the inspected DAC channel. It must be one of the 
+  * @param  bChannel the inspected DAC channel. It must be one of the
   *         exported channels (Ex. DAC_CH0).
   * @retval MC_Protocol_REG_t The variables provided in out through the inspected
-  *         channel. It will be one of the exported UI register (Ex. 
+  *         channel. It will be one of the exported UI register (Ex.
   *         MC_PROTOCOL_REG_I_A).
   */
 MC_Protocol_REG_t UI_GetDAC(CUI this, DAC_Channel_t bChannel)
@@ -2447,7 +2447,7 @@ void UI_LCDInit(CUI this, CUI oDAC, const char* s_fwVer)
 }
 
 /**
-  * @brief  Execute the LCD execution and refreshing. It must be called 
+  * @brief  Execute the LCD execution and refreshing. It must be called
   *         periodically.
   * @param  this related object of class CUI. It must be a LCDx_UI object casted
   *         to CUI otherwise the method will have no effect.
