@@ -16,8 +16,8 @@
   *
   *        http://www.st.com/software_license_agreement_liberty_v2
   *
-  * Unless required by applicable law or agreed to in writing, software 
-  * distributed under the License is distributed on an "AS IS" BASIS, 
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   * See the License for the specific language governing permissions and
   * limitations under the License.
@@ -36,7 +36,7 @@
 #ifdef MC_CLASS_DYNAMIC
   #include "stdlib.h" /* Used for dynamic allocation */
 #else
-  
+
   #define MAX_USART_COM_NUM 1
 
   _CUSART_t USART_COMpool[MAX_USART_COM_NUM];
@@ -58,7 +58,7 @@ CUSART_COM USART_NewObject(pUSARTParams_t pUSARTParams)
 {
   _CCOM _oCOM;
   _CUSART _oUSART;
-  
+
   _oCOM = (_CCOM)COM_NewObject();
 
   #ifdef MC_CLASS_DYNAMIC
@@ -73,28 +73,28 @@ CUSART_COM USART_NewObject(pUSARTParams_t pUSARTParams)
       _oUSART = MC_NULL;
     }
   #endif
-  
+
   _oUSART->pDParams_str = pUSARTParams;
   _oCOM->DerivedClass = (void*)_oUSART;
   _oCOM->Methods_str.pStartReceive = &USART_StartReceive;
   _oCOM->Methods_str.pStartTransmit = &USART_StartTransmit;
-  
+
   _oCOM->Methods_str.pIRQ_Handler = &USART_IRQ_Handler;
   Set_UI_IRQ_Handler(pUSARTParams->bUIIRQn, (_CUIIRQ)_oCOM);
-  
+
   //Init Struct communication
   COM_ResetTX((CCOM)_oCOM);
   COM_ResetRX((CCOM)_oCOM);
-  
+
   USART_HWInit(pUSARTParams);
-  
+
   return ((CUSART_COM)_oCOM);
 }
 
 void USART_HWInit(pUSARTParams_t pUSARTParams)
 {
   GPIO_InitTypeDef GPIO_InitStructure;
-  
+
   /* Enable USART clock: UASRT1 -> APB2, USART2-5 -> APB1 */
   if (pUSARTParams->wUSARTClockSource == RCC_APB2Periph_USART1)
   {
@@ -103,33 +103,33 @@ void USART_HWInit(pUSARTParams_t pUSARTParams)
   else
   {
     RCC_APB1PeriphClockCmd(pUSARTParams->wUSARTClockSource, ENABLE);
-  }  
-  
+  }
+
   /* USART Init structure */
   /* Configure USART */
   USART_Init(pUSARTParams->USARTx, pUSARTParams->USART_InitStructure);
-    
+
   /* Configures the GPIO ports for USART. */
   if (pUSARTParams->wUSARTRemapping != 0)
   {
     /* Enable USART AFIO clock if remapped */
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
-    
+
     /* Enable the USART Pins Software Remapping */
     GPIO_PinRemapConfig(pUSARTParams->wUSARTRemapping , ENABLE);
   }
-  
+
   /* Configure Rx as input floating */
   GPIO_InitStructure.GPIO_Pin = pUSARTParams->hRxPin;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
   GPIO_Init(pUSARTParams->hRxPort, &GPIO_InitStructure);
-    
+
   /* Configure Tx as alternate function push-pull */
   GPIO_InitStructure.GPIO_Pin = pUSARTParams->hTxPin;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
   GPIO_Init(pUSARTParams->hTxPort, &GPIO_InitStructure);
-  
+
   if (pUSARTParams->NVIC_InitStructure->NVIC_IRQChannelCmd == ENABLE)
   {
     /* Enable USART Receive and Transmit interrupts */
@@ -144,7 +144,7 @@ void USART_HWInit(pUSARTParams_t pUSARTParams)
     /* Enable the USARTy Interrupt */
     NVIC_Init(pUSARTParams->NVIC_InitStructure);
   }
-  
+
   /* Enable the USART */
   USART_Cmd(pUSARTParams->USARTx, ENABLE);
 }
@@ -152,7 +152,7 @@ void USART_HWInit(pUSARTParams_t pUSARTParams)
 /*******************************************************************************
 * Function Name  : USART_IRQ_Handler
 * Description    : Interrupt function for the serial communication
-* Input          : none 
+* Input          : none
 * Return         : none
 *******************************************************************************/
 void* USART_IRQ_Handler(void* this,unsigned char flags, unsigned short rx_data)
@@ -161,25 +161,25 @@ void* USART_IRQ_Handler(void* this,unsigned char flags, unsigned short rx_data)
   if (flags == 0) // Flag 0 = RX
   {
     /* Read one byte from the receive data register */
-    if (((_CCOM)this)->Vars_str.PL_Data.RX.Buffer != MC_NULL && 
+    if (((_CCOM)this)->Vars_str.PL_Data.RX.Buffer != MC_NULL &&
         ((_CCOM)this)->Vars_str.PL_Data.RX.BufferTransfer < ((_CCOM)this)->Vars_str.PL_Data.RX.BufferCount)
     {
       ((_CCOM)this)->Vars_str.PL_Data.RX.Buffer[((_CCOM)this)->Vars_str.PL_Data.RX.BufferTransfer++] = (uint16_t)(rx_data & (uint16_t)0x01FF);
-            
+
       pRetVal = ReceivingFrame(((_CCOM)this)->Vars_str.parent,((_CCOM)this)->Vars_str.PL_Data.RX.Buffer,((_CCOM)this)->Vars_str.PL_Data.RX.BufferTransfer);
     }
   }
-  
+
   if (flags == 1) // Flag 1 = TX
   {
     /* Write one byte to the transmit data register */
-    USART_SendData(((_CUSART)(((_CCOM)this)->DerivedClass))->pDParams_str->USARTx, ((_CCOM)this)->Vars_str.PL_Data.TX.Buffer[((_CCOM)this)->Vars_str.PL_Data.TX.BufferTransfer++]);                   
-    
+    USART_SendData(((_CUSART)(((_CCOM)this)->DerivedClass))->pDParams_str->USARTx, ((_CCOM)this)->Vars_str.PL_Data.TX.Buffer[((_CCOM)this)->Vars_str.PL_Data.TX.BufferTransfer++]);
+
     if (((_CCOM)this)->Vars_str.PL_Data.TX.BufferCount <= ((_CCOM)this)->Vars_str.PL_Data.TX.BufferTransfer)
     {
       /* Disable the USART Transfer interrupt */
       USART_ITConfig(((_CUSART)(((_CCOM)this)->DerivedClass))->pDParams_str->USARTx, USART_IT_TXE, DISABLE);
-  
+
       SendingFrame(((_CCOM)this)->Vars_str.parent,((_CCOM)this)->Vars_str.PL_Data.TX.Buffer, ((_CCOM)this)->Vars_str.PL_Data.TX.BufferTransfer);
 
       //Init communication for next transfer;
@@ -203,7 +203,7 @@ void* USART_IRQ_Handler(void* this,unsigned char flags, unsigned short rx_data)
 
 /**
   * @brief  Start receive from the channel (IRQ enabling implementation)
-  * @param  this: COM object 
+  * @param  this: COM object
   * @retval None
   */
 static void USART_StartReceive(CCOM this)
@@ -213,7 +213,7 @@ static void USART_StartReceive(CCOM this)
 
 /**
   * @brief  Start transmit to the channel (IRQ enabling implementation)
-  * @param  this: COM object 
+  * @param  this: COM object
   * @retval None
   */
 static void USART_StartTransmit(CCOM this)

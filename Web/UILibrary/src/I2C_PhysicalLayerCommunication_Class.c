@@ -26,12 +26,14 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
+#include <stddef.h>
 
 #include "PhysicalLayerCommunication_Class.h"
 #include "PhysicalLayerCommunication_Private.h"
 #include "I2C_PhysicalLayerCommunication_Class.h"
 #include "I2C_PhysicalLayerCommunication_Private.h"
 #include "UIIRQHandlerPrivate.h"
+#include "UIIRQHandlerClass.h"
 
 #ifdef MC_CLASS_DYNAMIC
   #include "stdlib.h" /* Used for dynamic allocation */
@@ -45,7 +47,7 @@
 
 _CCOM GLOBAL_COM = NULL;
 
-enum I2C_FLAG_ENUM = {
+enum I2C_FLAG_ENUM {
   I2C_TX_READY = 0,
   I2C_RX_AVAILABLE,
   I2C_ADDR_MATCH,
@@ -56,7 +58,7 @@ enum I2C_FLAG_ENUM = {
   I2C_ERROR_DETECT
 };
 
-enum I2C_STATE_ENUM = {
+enum I2C_STATE_ENUM {
   I2C_IDLE = 0,
   I2C_START,
   I2C_READ_ADDR,
@@ -76,7 +78,7 @@ enum I2C_STATE_ENUM = {
   */
 void I2C_EV_IRQHandler(void)
 {
-  typedef void* (*pExec_UI_IRQ_Handler_t) (unsigned char bIRQAddr, unsigned char flag);
+  //typedef void* (*pExec_UI_IRQ_Handler_t) (unsigned char bIRQAddr, unsigned char flag);
   _CI2C i2c_struct = (_CI2C) GLOBAL_COM->DerivedClass;
   I2CParams_t * params = i2c_struct->pDParams_str;
 
@@ -252,7 +254,7 @@ CI2C_COM I2C_NewObject(pI2CParams_t pI2CParams)
   _oCOM->Methods_str.pIRQ_Handler   = &I2C_IRQ_Handler;
 
   //XXX: Where is the IRQ Interrupt?
-  Set_UI_IRQ_Handler(pI2CParams->irq, (_CUIIRQ)_oCOM);
+  Set_UI_IRQ_Handler(pI2CParams->ui_irq_num, (_CUIIRQ)_oCOM);
 
   //Init Struct communication
   COM_ResetTX((CCOM)_oCOM);
@@ -282,13 +284,13 @@ void I2C_HWInit(pI2CParams_t pI2CParams)
     RCC_APB2PeriphClockCmd(pI2CParams->i2c_clk,     ENABLE);
   }
   //Drive the I2C GPIO pins with the appropriate clock
-  RCC_AHBPeriphClockCmd(pI2CParams->i2c_scl_clk,    ENABLE);
-  RCC_APBPeriphClockCmd(pI2CParams->i2c_sda_clk,    ENABLE);
+  RCC_APB1PeriphClockCmd(pI2CParams->i2c_scl_clk,    ENABLE);
+  RCC_APB1PeriphClockCmd(pI2CParams->i2c_sda_clk,    ENABLE);
 
   //Configure the I2C SCL Pin
   GPIO_InitStructure.GPIO_Pin = pI2CParams->i2c_scl_pin;
   GPIO_InitStructure.GPIO_Mode = pI2CParams->i2c_scl_af;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_40MHz;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Level_2;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
   GPIO_Init(pI2CParams->i2c_scl_port, &GPIO_InitStructure);
@@ -296,7 +298,7 @@ void I2C_HWInit(pI2CParams_t pI2CParams)
   //Configure I2C SDA Pin
   GPIO_InitStructure.GPIO_Pin = pI2CParams->i2c_sda_pin;
   GPIO_InitStructure.GPIO_Mode = pI2CParams->i2c_sda_af;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_40MHz;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Level_2;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
   GPIO_Init(pI2CParams->i2c_sda_port, &GPIO_InitStructure);
@@ -338,7 +340,7 @@ void I2C_HWInit(pI2CParams_t pI2CParams)
                   I2C_IT_NACKI  | // Nack Detected (Master wants us to stop transmitting)
                   I2C_IT_ADDRI  | // Address Detected (Used when reading)
                   I2C_IT_TXI    | // Transmit Buffer is Empty
-                  I2C_It_RXI      // Receive Buffer is not Empty
+                  I2C_IT_RXI      // Receive Buffer is not Empty
                 ),
                 ENABLE);
 
@@ -355,7 +357,7 @@ void* I2C_IRQ_Handler(void* this,unsigned char flags, unsigned short rx_data)
 {
   void* pRetVal = MC_NULL;
   _CI2C i2c_struct = (_CI2C) GLOBAL_COM->DerivedClass;
-  I2CParams_t * params = i2c_struct->pDParams_str;
+  //I2CParams_t * params = i2c_struct->pDParams_str;
 
 
   //This just updates the state

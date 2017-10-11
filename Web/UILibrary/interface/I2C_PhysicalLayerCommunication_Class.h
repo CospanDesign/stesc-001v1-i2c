@@ -50,7 +50,7 @@
 typedef const struct
 {
   //I2C Peripheral Configuration
-  I2C_TypeDef       i2c_peripheral;
+  I2C_TypeDef *     i2c_peripheral;
   uint32_t          i2c_clk;
   uint32_t          slave_address;
   uint16_t          i2c_speed;
@@ -59,12 +59,12 @@ typedef const struct
 
   //GPIO
   uint8_t           i2c_scl_clk;
-  GPIO_TypeDef      i2c_scl_port;
+  GPIO_TypeDef *    i2c_scl_port;
   uint32_t          i2c_scl_pin;
   GPIOMode_TypeDef  i2c_scl_af;
 
   uint8_t           i2c_sda_clk;
-  GPIO_TypeDef      i2c_sda_port;
+  GPIO_TypeDef *    i2c_sda_port;
   uint32_t          i2c_sda_pin;
   GPIOMode_TypeDef  i2c_sda_af;
 

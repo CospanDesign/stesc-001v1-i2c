@@ -220,10 +220,10 @@ static void DACX_Exec(CUI this)
   bCh4_var = ((_DCDACX2_UI)(((_CUI)this)->DerivedClass))->
     DVars_str.bChannel_variable[DAC_CH3];
     
-  out1=(uint8_t)(DACOFF + ((int16_t)UI_GetReg(this,bCh1_var))>>8);
-  out2=(uint8_t)(DACOFF + ((int16_t)UI_GetReg(this,bCh2_var))>>8);
-  out3=(uint8_t)(DACOFF + ((int16_t)UI_GetReg(this,bCh3_var))>>8);
-  out4=(uint8_t)(DACOFF + ((int16_t)UI_GetReg(this,bCh4_var))>>8);
+  out1=(uint8_t)((DACOFF + ((int16_t)UI_GetReg(this,bCh1_var)))>>8);
+  out2=(uint8_t)((DACOFF + ((int16_t)UI_GetReg(this,bCh2_var)))>>8);
+  out3=(uint8_t)((DACOFF + ((int16_t)UI_GetReg(this,bCh3_var)))>>8);
+  out4=(uint8_t)((DACOFF + ((int16_t)UI_GetReg(this,bCh4_var)))>>8);
   
   /***** Send the first two channels *****/
   

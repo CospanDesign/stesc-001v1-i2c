@@ -26,8 +26,13 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
-#include "..\..\MCLibrary\interface\GateDriverCtrlClass.h"
-#include "..\..\MCLibrary\interface\GAP_GateDriverCtrlClass.h"
+//#include "..\..\MCLibrary\interface\GateDriverCtrlClass.h"
+//#include "..\..\MCLibrary\interface\GAP_GateDriverCtrlClass.h"
+
+#include "GateDriverCtrlClass.h"
+#include "GAP_GateDriverCtrlClass.h"
+
+
 
 #define GAP_DEVICE_NUM 7
 

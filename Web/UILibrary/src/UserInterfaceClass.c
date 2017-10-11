@@ -31,7 +31,7 @@
 #include "CrossCheck.h"
 #undef PROJECT_CHK
 
-#include "MC_Type.h"
+#include "MC_type.h"
 #include "Parameters conversion.h"
 
 #ifdef DUALDRIVE
