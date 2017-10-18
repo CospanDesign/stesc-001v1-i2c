@@ -257,11 +257,9 @@ void UI_TaskInit(uint8_t cfg, uint32_t* pUICfg, uint8_t bMCNum, CMCI oMCIList[],
   
 #if (defined(I2C_COMMUNICATION))
     oMCP = MCP_NewObject(MC_NULL,&MCPParams);
-    //oUSART = USART_NewObject(&USARTParams_str);
     oI2C = I2C_NewObject(&i2c_params);
     oFCP = FCP_NewObject(&FrameParams_str);
 
-    //FCP_Init(oFCP, (CCOM)oUSART);
     FCP_Init(oFCP, (CCOM)oI2C);
     MCP_Init(oMCP, oFCP, oDAC, s_fwVer);
     UI_Init((CUI)oMCP, bMCNum, oMCIList, oMCTList, pUICfg); /* Init UI and link MC obj */  

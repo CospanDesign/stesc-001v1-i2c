@@ -12,15 +12,15 @@
         <ByteLimit>50</ByteLimit>
     </Stack>
     <StLinkDriver>
-        <stlinkserialNo>23251767</stlinkserialNo>
-        <stlinkfoundProbes />
-        <stlinkResetStyle>0</stlinkResetStyle>
-        <stlinkResetStrategy>1</stlinkResetStrategy>
         <CStepIntDis>_ 0</CStepIntDis>
         <LeaveTargetRunning>_ 1</LeaveTargetRunning>
+        <stlinkResetStyle>0</stlinkResetStyle>
+        <stlinkResetStrategy>1</stlinkResetStrategy>
+        <stlinkserialNo>23251767</stlinkserialNo>
+        <stlinkfoundProbes />
     </StLinkDriver>
     <DebugChecksum>
-        <Checksum>247907345</Checksum>
+        <Checksum>1140793840</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -65,8 +65,21 @@
     <InterruptStripe>
         <Sort>1</Sort>
     </InterruptStripe>
+    <SfrWindow>
+        <Show>1 1</Show>
+        <Sort>4 0</Sort>
+    </SfrWindow>
     <struct_types>
         <Fmt0>GPIO_InitTypeDef-GPIO_Pin	4	0</Fmt0>
+        <Fmt1>I2C_TypeDef-CR1	4	0</Fmt1>
+        <Fmt2>I2C_TypeDef-CR2	4	0</Fmt2>
+        <Fmt3>I2C_TypeDef-ICR	4	0</Fmt3>
+        <Fmt4>I2C_TypeDef-ISR	4	0</Fmt4>
+        <Fmt5>I2C_TypeDef-PECR	4	0</Fmt5>
+        <Fmt6>I2C_TypeDef-RXDR	4	0</Fmt6>
+        <Fmt7>I2C_TypeDef-TIMEOUTR	4	0</Fmt7>
+        <Fmt8>I2C_TypeDef-TIMINGR	4	0</Fmt8>
+        <Fmt9>I2C_TypeDef-TXDR	4	0</Fmt9>
     </struct_types>
     <Trace2>
         <Enabled>0</Enabled>
@@ -113,15 +126,26 @@
         <ShowTimeSum>1</ShowTimeSum>
         <SumSortOrder>0</SumSortOrder>
     </EventLog>
+    <DisassembleMode>
+        <mode>0</mode>
+    </DisassembleMode>
+    <Breakpoints2>
+        <Bp0>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\..\..\..\..\..\..\..\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW_I2C}.259.5" 0 0 1 "" 0 "" 0</Bp0>
+        <Bp1>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\..\..\UILibrary\src\I2C_PhysicalLayerCommunication_Class.c}.214.5" 0 0 1 "" 0 "" 0</Bp1>
+        <Bp2>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\..\..\UILibrary\src\I2C_PhysicalLayerCommunication_Class.c}.106.3" 0 0 1 "" 0 "" 0</Bp2>
+        <Bp3>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\..\..\UILibrary\src\I2C_PhysicalLayerCommunication_Class.c}.332.3" 0 0 1 "" 0 "" 0</Bp3>
+        <Bp4>_ 0 "EMUL_CODE" "{C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\Project\UITask.c}.121.1" 0 0 1 "" 0 "" 0</Bp4>
+        <Count>5</Count>
+    </Breakpoints2>
     <LogFile>
         <LoggingEnabled>_ 0</LoggingEnabled>
         <LogFile>_ ""</LogFile>
         <Category>_ 0</Category>
     </LogFile>
-    <TermIOLog>
-        <LoggingEnabled>_ 0</LoggingEnabled>
-        <LogFile>_ ""</LogFile>
-    </TermIOLog>
+    <Aliases>
+        <Count>0</Count>
+        <SuppressDialog>0</SuppressDialog>
+    </Aliases>
     <DriverProfiling>
         <Enabled>0</Enabled>
         <Mode>3</Mode>
@@ -135,21 +159,8 @@
     <CallStackStripe>
         <ShowTiming>1</ShowTiming>
     </CallStackStripe>
-    <SfrWindow>
-        <Show>1 1</Show>
-        <Sort>4 0</Sort>
-    </SfrWindow>
-    <DisassembleMode>
-        <mode>0</mode>
-    </DisassembleMode>
-    <Breakpoints2>
-        <Bp0>_ 0 "EMUL_CODE" "{C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW_I2C\Web\Project\UITask.c}.259.5" 0 0 1 "" 0 "" 0</Bp0>
-        <Bp1>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\..\..\UILibrary\src\I2C_PhysicalLayerCommunication_Class.c}.214.5" 0 0 1 "" 0 "" 0</Bp1>
-        <Bp2>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\..\..\UILibrary\src\I2C_PhysicalLayerCommunication_Class.c}.106.3" 0 0 1 "" 0 "" 0</Bp2>
-        <Count>3</Count>
-    </Breakpoints2>
-    <Aliases>
-        <Count>0</Count>
-        <SuppressDialog>0</SuppressDialog>
-    </Aliases>
+    <TermIOLog>
+        <LoggingEnabled>_ 0</LoggingEnabled>
+        <LogFile>_ ""</LogFile>
+    </TermIOLog>
 </settings>
