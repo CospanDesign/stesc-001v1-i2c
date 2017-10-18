@@ -302,27 +302,31 @@ void I2C_HWInit(pI2CParams_t pI2CParams)
   
   /* I2C1 interrupt Init */
 
-  //NVIC_SetPriority(I2C1_EV_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0));
-  //NVIC_EnableIRQ(I2C1_EV_IRQn);
-  //NVIC_SetPriority(I2C1_ER_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0));
-  //NVIC_EnableIRQ(I2C1_ER_IRQn);
+  NVIC_SetPriority(I2C1_EV_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0));
+  NVIC_EnableIRQ(I2C1_EV_IRQn);
+  NVIC_SetPriority(I2C1_ER_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0));
+  NVIC_EnableIRQ(I2C1_ER_IRQn);
+  
+  /*
   NVIC_InitStructure.NVIC_IRQChannel = I2C1_EV_IRQn;
   NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x00;
   NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x00;
   NVIC_InitStructure.NVIC_IRQChannelCmd = (FunctionalState) (ENABLE);
   NVIC_Init(&NVIC_InitStructure);
+  */
   
   
   I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
   I2C_InitStructure.I2C_AnalogFilter = I2C_AnalogFilter_Enable;
   I2C_InitStructure.I2C_DigitalFilter = 0x00;
   I2C_InitStructure.I2C_Timing = (uint32_t) 0xC062121F;
-  I2C_InitStructure.I2C_OwnAddress1 = 0x29;
+  I2C_InitStructure.I2C_OwnAddress1 = (0x29) << 1;
+  //I2C_InitStructure.I2C_OwnAddress1 = 82;
   I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
   I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
 
   I2C_Init(pI2CParams->i2c_peripheral, &I2C_InitStructure);
-  I2C_Cmd(pI2CParams->i2c_peripheral, ENABLE);
+
   //Configure Interrupts
   
   I2C_ITConfig(pI2CParams->i2c_peripheral,
@@ -336,11 +340,16 @@ void I2C_HWInit(pI2CParams_t pI2CParams)
                 ,
                 ENABLE);
 
+  I2C_Cmd(pI2CParams->i2c_peripheral, ENABLE);
+  
   //I2C_SoftwareResetCmd(pI2CParams->i2c_peripheral);
   //I2C_AcknowledgeConfig(pI2CParams->i2c_peripheral, ENABLE);
   //I2C_SlaveByteControlCmd(pI2CParams->i2c_peripheral, ENABLE);
   //I2C_TransferHandling(pI2CParams->i2c_peripheral, pI2CParams->slave_address, 1, I2C_AutoEnd_Mode, I2C_No_StartStop);
   I2C_ReceiveData(pI2CParams->i2c_peripheral);
+//  pI2CParams->i2c_peripheral->CR1 |= I2C_CR1_RXIE;
+//  pI2CParams->i2c_peripheral->CR1 |= I2C_CR1_ERRIE;
+//  pI2CParams->i2c_peripheral->CR1 |= I2C_CR1_TCIE;
 }
 
 /*******************************************************************************
