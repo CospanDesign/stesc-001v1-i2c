@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR ANSI C/C++ Compiler V8.11.3.13950/W32 for ARM       29/Sep/2017  16:09:46
+# IAR ANSI C/C++ Compiler V8.11.3.13950/W32 for ARM       17/Oct/2017  22:37:48
 # Copyright 1999-2017 IAR Systems AB.
 #
 #    Cpu mode     =  thumb
@@ -8,60 +8,61 @@
 #    Source file  =  
 #        C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power
 #        Board\Rev
-#        D\Software\ESC_STM32_FOC_FW\Web\MCLibrary\src\R1_F30X_PWMnCurrFdbkClass.c
+#        D\Software\ESC_STM32_FOC_FW_I2C_TEST\Web\MCLibrary\src\R1_F30X_PWMnCurrFdbkClass.c
 #    Command line =  
-#        -f C:\Users\davem\AppData\Local\Temp\EWD9FB.tmp
+#        -f C:\Users\davem\AppData\Local\Temp\EW3AC2.tmp
 #        ("C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power
 #        Board\Rev
-#        D\Software\ESC_STM32_FOC_FW\Web\MCLibrary\src\R1_F30X_PWMnCurrFdbkClass.c"
+#        D\Software\ESC_STM32_FOC_FW_I2C_TEST\Web\MCLibrary\src\R1_F30X_PWMnCurrFdbkClass.c"
 #        -D USE_STDPERIPH_DRIVER -D STM32F30X -D MC_LIBRARY_SINGLE -D
 #        ARM_MATH_CM4 -D CCMRAM -lcN
 #        "C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power
-#        Board\Rev D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\MC Library
-#        Compiled\STM32F303_SD\List" -o
+#        Board\Rev D\Software\ESC_STM32_FOC_FW_I2C_TEST\Web\Project\EWARM\MC
+#        Library Compiled\STM32F303_SD\List" -o
 #        "C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power
-#        Board\Rev D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\MC Library
-#        Compiled\STM32F303_SD\Obj" --debug --endian=little --cpu=Cortex-M4 -e
-#        --fpu=VFPv4_sp --dlib_config "C:\Program Files (x86)\IAR
-#        Systems\Embedded Workbench 8.0\arm\INC\c\DLib_Config_Normal.h" -I
+#        Board\Rev D\Software\ESC_STM32_FOC_FW_I2C_TEST\Web\Project\EWARM\MC
+#        Library Compiled\STM32F303_SD\Obj" --debug --endian=little
+#        --cpu=Cortex-M4 -e --fpu=VFPv4_sp --dlib_config "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench
+#        8.0\arm\INC\c\DLib_Config_Normal.h" -I
 #        "C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power
-#        Board\Rev D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\..\" -I
-#        "C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power
-#        Board\Rev
-#        D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\..\..\MCLibrary\" -I
-#        "C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power
-#        Board\Rev
-#        D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\..\..\MCLibrary\inc\" -I
-#        "C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power
-#        Board\Rev
-#        D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\..\..\MCLibrary\protected_sources\inc\"
+#        Board\Rev D\Software\ESC_STM32_FOC_FW_I2C_TEST\Web\Project\EWARM\..\"
 #        -I "C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone
 #        Power Board\Rev
-#        D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\..\..\MCLibrary\interface\"
+#        D\Software\ESC_STM32_FOC_FW_I2C_TEST\Web\Project\EWARM\..\..\MCLibrary\"
 #        -I "C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone
 #        Power Board\Rev
-#        D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\..\..\MCLibrary\interface\common\"
+#        D\Software\ESC_STM32_FOC_FW_I2C_TEST\Web\Project\EWARM\..\..\MCLibrary\inc\"
 #        -I "C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone
 #        Power Board\Rev
-#        D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\..\..\..\Common\Libraries\CMSIS\CMSIS_2_x\Device\ST\STM32F30x\Include\"
+#        D\Software\ESC_STM32_FOC_FW_I2C_TEST\Web\Project\EWARM\..\..\MCLibrary\protected_sources\inc\"
 #        -I "C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone
 #        Power Board\Rev
-#        D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\..\..\..\Common\Libraries\STM32F30x_StdPeriph_Driver\inc\"
+#        D\Software\ESC_STM32_FOC_FW_I2C_TEST\Web\Project\EWARM\..\..\MCLibrary\interface\"
+#        -I "C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone
+#        Power Board\Rev
+#        D\Software\ESC_STM32_FOC_FW_I2C_TEST\Web\Project\EWARM\..\..\MCLibrary\interface\common\"
+#        -I "C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone
+#        Power Board\Rev
+#        D\Software\ESC_STM32_FOC_FW_I2C_TEST\Web\Project\EWARM\..\..\..\Common\Libraries\CMSIS\CMSIS_2_x\Device\ST\STM32F30x\Include\"
+#        -I "C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone
+#        Power Board\Rev
+#        D\Software\ESC_STM32_FOC_FW_I2C_TEST\Web\Project\EWARM\..\..\..\Common\Libraries\STM32F30x_StdPeriph_Driver\inc\"
 #        -Oh --use_c++_inline -I "C:\Program Files (x86)\IAR Systems\Embedded
 #        Workbench 8.0\arm\CMSIS\Include\")
 #    Locale       =  C
 #    List file    =  
 #        C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power
-#        Board\Rev D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\MC Library
-#        Compiled\STM32F303_SD\List\R1_F30X_PWMnCurrFdbkClass.lst
+#        Board\Rev D\Software\ESC_STM32_FOC_FW_I2C_TEST\Web\Project\EWARM\MC
+#        Library Compiled\STM32F303_SD\List\R1_F30X_PWMnCurrFdbkClass.lst
 #    Object file  =  
 #        C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power
-#        Board\Rev D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\MC Library
-#        Compiled\STM32F303_SD\Obj\R1_F30X_PWMnCurrFdbkClass.o
+#        Board\Rev D\Software\ESC_STM32_FOC_FW_I2C_TEST\Web\Project\EWARM\MC
+#        Library Compiled\STM32F303_SD\Obj\R1_F30X_PWMnCurrFdbkClass.o
 #
 ###############################################################################
 
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\MCLibrary\src\R1_F30X_PWMnCurrFdbkClass.c
+C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW_I2C_TEST\Web\MCLibrary\src\R1_F30X_PWMnCurrFdbkClass.c
       1          /**
       2            ******************************************************************************
       3            * @file    R1_F30X_PWMnCurrFdbkClass.c

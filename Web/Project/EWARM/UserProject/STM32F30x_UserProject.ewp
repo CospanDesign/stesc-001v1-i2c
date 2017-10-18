@@ -4334,7 +4334,7 @@
                     </excluded>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\MC Library Compiled\Exe\MC_Library_STM32F303_single_drive.a</name>
+                    <name>$PROJ_DIR$\..\mc library compiled\Exe\MC_Library_STM32F303_single_drive.a</name>
                     <excluded>
                         <configuration>STM32303C-EVAL_DUALDRIVE</configuration>
                         <configuration>STM32F302_SINGLEDRIVE</configuration>
@@ -4545,6 +4545,9 @@
                     <name>$PROJ_DIR$\..\..\..\UILibrary\interface\FrameCommunicationProtocolClass.h</name>
                 </file>
                 <file>
+                    <name>$PROJ_DIR$\..\..\..\UILibrary\interface\I2C_PhysicalLayerCommunication_Class.h</name>
+                </file>
+                <file>
                     <name>$PROJ_DIR$\..\..\..\UILibrary\interface\LCDIExportedFunctions.h</name>
                 </file>
                 <file>
@@ -4582,6 +4585,9 @@
                 </file>
                 <file>
                     <name>$PROJ_DIR$\..\..\..\UILibrary\inc\FrameCommunicationProtocolPrivate.h</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\UILibrary\inc\I2C_PhysicalLayerCommunication_Private.h</name>
                 </file>
                 <file>
                     <name>$PROJ_DIR$\..\..\..\UILibrary\inc\LCD_Interface.h</name>
@@ -4623,6 +4629,9 @@
                     <name>$PROJ_DIR$\..\..\..\UILibrary\src\FrameCommunicationProtocolClass.c</name>
                 </file>
                 <file>
+                    <name>$PROJ_DIR$\..\..\..\UILibrary\src\I2C_PhysicalLayerCommunication_Class.c</name>
+                </file>
+                <file>
                     <name>$PROJ_DIR$\..\..\..\UILibrary\src\LCDManager_UserInterfaceClass.c</name>
                 </file>
                 <file>
@@ -4657,6 +4666,9 @@
     </file>
     <file>
         <name>$PROJ_DIR$\..\..\GAPApplication.h</name>
+    </file>
+    <file>
+        <name>$PROJ_DIR$\..\..\I2C_Params.h</name>
     </file>
     <file>
         <name>$PROJ_DIR$\..\..\main.c</name>

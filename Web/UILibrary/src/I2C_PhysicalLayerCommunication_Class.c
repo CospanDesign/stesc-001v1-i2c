@@ -26,12 +26,14 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
+#include <stddef.h>
 
 #include "PhysicalLayerCommunication_Class.h"
 #include "PhysicalLayerCommunication_Private.h"
 #include "I2C_PhysicalLayerCommunication_Class.h"
 #include "I2C_PhysicalLayerCommunication_Private.h"
 #include "UIIRQHandlerPrivate.h"
+#include "UIIRQHandlerClass.h"
 
 #ifdef MC_CLASS_DYNAMIC
   #include "stdlib.h" /* Used for dynamic allocation */
@@ -45,7 +47,7 @@
 
 _CCOM GLOBAL_COM = NULL;
 
-enum I2C_FLAG_ENUM = {
+enum I2C_FLAG_ENUM {
   I2C_TX_READY = 0,
   I2C_RX_AVAILABLE,
   I2C_ADDR_MATCH,
@@ -56,7 +58,7 @@ enum I2C_FLAG_ENUM = {
   I2C_ERROR_DETECT
 };
 
-enum I2C_STATE_ENUM = {
+enum I2C_STATE_ENUM {
   I2C_IDLE = 0,
   I2C_START,
   I2C_READ_ADDR,
@@ -66,19 +68,21 @@ enum I2C_STATE_ENUM = {
   I2C_STOP
 };
 
-
+int i2c_debug = 0;
+//extern int i2c_debug = 0;
 /*Start here***********************************************************/
 /*GUI, this section is present only if serial communication is enabled*/
 /**
   * @brief  This function handles I2C interrupt request.
   * @param  None
   * @retval None
-  */
-void I2C_EV_IRQHandler(void)
+  */ 
+void I2C1_EV_IRQHandler(void)
 {
-  typedef void* (*pExec_UI_IRQ_Handler_t) (unsigned char bIRQAddr, unsigned char flag);
+  //typedef void* (*pExec_UI_IRQ_Handler_t) (unsigned char bIRQAddr, unsigned char flag);
   _CI2C i2c_struct = (_CI2C) GLOBAL_COM->DerivedClass;
   I2CParams_t * params = i2c_struct->pDParams_str;
+  i2c_debug ++;
 
 /*
 **  I2C_FLAG_TXE
@@ -205,8 +209,9 @@ XX  I2C_FLAG_BUSY
 */
 }
 
-void I2C_ER_IRQHandler(void)
+void I2C1_ER_IRQHandler(void)
 {
+    i2c_debug ++;
 }
 
 
@@ -252,7 +257,7 @@ CI2C_COM I2C_NewObject(pI2CParams_t pI2CParams)
   _oCOM->Methods_str.pIRQ_Handler   = &I2C_IRQ_Handler;
 
   //XXX: Where is the IRQ Interrupt?
-  Set_UI_IRQ_Handler(pI2CParams->irq, (_CUIIRQ)_oCOM);
+  Set_UI_IRQ_Handler(pI2CParams->ui_irq_num, (_CUIIRQ)_oCOM);
 
   //Init Struct communication
   COM_ResetTX((CCOM)_oCOM);
@@ -269,80 +274,73 @@ void I2C_HWInit(pI2CParams_t pI2CParams)
   NVIC_InitTypeDef NVIC_InitStructure;
   GPIO_InitTypeDef GPIO_InitStructure;
   I2C_InitTypeDef  I2C_InitStructure;
+  
+  /* Enable I2C clock: I2C1 -> APB4 */
+  //Clock on APB1
+  //RCC_APB1PeriphClockCmd(pI2CParams->i2c_clk,     ENABLE);
+  RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
+  RCC_I2CCLKConfig(RCC_I2C1CLK_SYSCLK);
 
-  /* Enable I2C clock: UASRT1 -> APB2, I2C2-5 -> APB1 */
-  if (pI2CParams->i2c_clk == RCC_APB1Periph_I2C1)
-  {
-    //Clock on APB1
-    RCC_APB1PeriphClockCmd(pI2CParams->i2c_clk,     ENABLE);
-  }
-  else
-  {
-    //Clock on APB2
-    RCC_APB2PeriphClockCmd(pI2CParams->i2c_clk,     ENABLE);
-  }
   //Drive the I2C GPIO pins with the appropriate clock
-  RCC_AHBPeriphClockCmd(pI2CParams->i2c_scl_clk,    ENABLE);
-  RCC_APBPeriphClockCmd(pI2CParams->i2c_sda_clk,    ENABLE);
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
 
-  //Configure the I2C SCL Pin
+  //Configure the I2C SCL/SDA Pin
+  GPIO_PinAFConfig(pI2CParams->i2c_scl_port, GPIO_PinSource6, GPIO_AF_4);
+  GPIO_PinAFConfig(pI2CParams->i2c_scl_port, GPIO_PinSource7, GPIO_AF_4);  
+  
   GPIO_InitStructure.GPIO_Pin = pI2CParams->i2c_scl_pin;
-  GPIO_InitStructure.GPIO_Mode = pI2CParams->i2c_scl_af;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_40MHz;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_Init(pI2CParams->i2c_scl_port, &GPIO_InitStructure);
-
-  //Configure I2C SDA Pin
+  
+  GPIO_Init(pI2CParams->i2c_scl_port, &GPIO_InitStructure);  
   GPIO_InitStructure.GPIO_Pin = pI2CParams->i2c_sda_pin;
-  GPIO_InitStructure.GPIO_Mode = pI2CParams->i2c_sda_af;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_40MHz;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_Init(pI2CParams->i2c_sda_port, &GPIO_InitStructure);
+  GPIO_Init(pI2CParams->i2c_scl_port, &GPIO_InitStructure); 
+  
 
-  //Configure the Priority Group to 1 bit
-  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+  
+  /* I2C1 interrupt Init */
 
-  //Configure the I2C Event Priority
-  NVIC_InitStructure.NVIC_IRQChannel = pI2CParams->i2c_evt_irq;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+  //NVIC_SetPriority(I2C1_EV_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0));
+  //NVIC_EnableIRQ(I2C1_EV_IRQn);
+  //NVIC_SetPriority(I2C1_ER_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0));
+  //NVIC_EnableIRQ(I2C1_ER_IRQn);
+  NVIC_InitStructure.NVIC_IRQChannel = I2C1_EV_IRQn;
+  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x00;
+  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x00;
+  NVIC_InitStructure.NVIC_IRQChannelCmd = (FunctionalState) (ENABLE);
   NVIC_Init(&NVIC_InitStructure);
-
-  //Configure the I2C Error Priority
-  NVIC_InitStructure.NVIC_IRQChannel = pI2CParams->i2c_err_irq;
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-  NVIC_Init(&NVIC_InitStructure);
-
-  //Make sure I2C is disabled before initializing peripheral mode
-  I2C_DeInit(pI2CParams->i2c_peripheral);
-
+  
+  
   I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
   I2C_InitStructure.I2C_AnalogFilter = I2C_AnalogFilter_Enable;
   I2C_InitStructure.I2C_DigitalFilter = 0x00;
-  I2C_InitStructure.I2C_Timing = pI2CParams->i2c_speed;
-//  I2C_InitStructure.I2C_ClockSpeed = pI2CParams->i2c_speed;
-  I2C_InitStructure.I2C_OwnAddress1 = pI2CParams->slave_address;
+  I2C_InitStructure.I2C_Timing = (uint32_t) 0xC062121F;
+  I2C_InitStructure.I2C_OwnAddress1 = 0x29;
   I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
+  I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
 
   I2C_Init(pI2CParams->i2c_peripheral, &I2C_InitStructure);
-
+  I2C_Cmd(pI2CParams->i2c_peripheral, ENABLE);
   //Configure Interrupts
+  
   I2C_ITConfig(pI2CParams->i2c_peripheral,
-                ( I2C_IT_ERRI   | // Error
+                  I2C_IT_ERRI   | // Error
                   I2C_IT_STOPI  | // Stop Detected (Finish of a transaction)
                   I2C_IT_NACKI  | // Nack Detected (Master wants us to stop transmitting)
                   I2C_IT_ADDRI  | // Address Detected (Used when reading)
                   I2C_IT_TXI    | // Transmit Buffer is Empty
-                  I2C_It_RXI      // Receive Buffer is not Empty
-                ),
+                  I2C_IT_TCI    | // Transfer Complete
+                  I2C_IT_RXI      // Receive Buffer is not Empty
+                ,
                 ENABLE);
 
-  I2C_Cmd(pI2CParams->i2c_peripheral, ENABLE);
+  //I2C_SoftwareResetCmd(pI2CParams->i2c_peripheral);
+  //I2C_AcknowledgeConfig(pI2CParams->i2c_peripheral, ENABLE);
+  //I2C_SlaveByteControlCmd(pI2CParams->i2c_peripheral, ENABLE);
+  //I2C_TransferHandling(pI2CParams->i2c_peripheral, pI2CParams->slave_address, 1, I2C_AutoEnd_Mode, I2C_No_StartStop);
+  I2C_ReceiveData(pI2CParams->i2c_peripheral);
 }
 
 /*******************************************************************************
@@ -355,7 +353,7 @@ void* I2C_IRQ_Handler(void* this,unsigned char flags, unsigned short rx_data)
 {
   void* pRetVal = MC_NULL;
   _CI2C i2c_struct = (_CI2C) GLOBAL_COM->DerivedClass;
-  I2CParams_t * params = i2c_struct->pDParams_str;
+  //I2CParams_t * params = i2c_struct->pDParams_str;
 
 
   //This just updates the state

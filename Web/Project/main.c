@@ -25,7 +25,7 @@
   ******************************************************************************
   */
 
-
+extern int i2c_debug;
 
 #ifdef I2C_COMMUNICATION
   #undef SERIAL_COMMUNICATION
@@ -62,6 +62,12 @@
 /* Electronic Speed Controller (STEVAL-ESC001V1)*/
 #include "STEVAL_ESC001V1.h"
 /******************************************************************************/
+
+#define I2C_COMMUNICATION ENABLE
+    
+#if (I2C_COMMUNICATION == ENABLE)
+#undef SERIAL_COMMUNICATION
+#endif
 
 #if (defined(USE_STM32303C_EVAL))
 #include "stm32303c_eval.h"

@@ -1,36 +1,36 @@
-"C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Common\Libraries\STM32_EVAL\STM32303C_EVAL\stm32303c_eval_i2c_ee.c"
+"C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Common\Libraries\STM32_EVAL\STM32303C_EVAL\stm32303c_eval_i2c_ee.c"
 -std=c11
 -ferror-limit=0
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\UserProject\..\..
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\Project\EWARM\UserProject\..\..
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\UserProject\..\..\..\..\Common\Libraries\CMSIS\CMSIS_2_x\Device\ST\STM32F30x\Include
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\Project\EWARM\UserProject\..\..\..\..\Common\Libraries\CMSIS\CMSIS_2_x\Device\ST\STM32F30x\Include
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\UserProject\..\..\..\..\Common\Libraries\STM32F30x_StdPeriph_Driver\inc
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\Project\EWARM\UserProject\..\..\..\..\Common\Libraries\STM32F30x_StdPeriph_Driver\inc
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\UserProject\..\..\..\..\Common\Libraries\STM32F30x_CPAL_Driver\inc
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\Project\EWARM\UserProject\..\..\..\..\Common\Libraries\STM32F30x_CPAL_Driver\inc
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\UserProject\..\..\..\..\Common\Libraries\STM32_EVAL
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\Project\EWARM\UserProject\..\..\..\..\Common\Libraries\STM32_EVAL
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\UserProject\..\..\..\..\Common\Libraries\STM32_EVAL\Common
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\Project\EWARM\UserProject\..\..\..\..\Common\Libraries\STM32_EVAL\Common
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\UserProject\..\..\..\..\Common\Libraries\STM32_EVAL\STM32303C_EVAL
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\Project\EWARM\UserProject\..\..\..\..\Common\Libraries\STM32_EVAL\STM32303C_EVAL
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\UserProject\..\..\..\MCLibrary\interface\common
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\Project\EWARM\UserProject\..\..\..\MCLibrary\interface\common
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\UserProject\..\..\..\MCLibrary\interface
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\Project\EWARM\UserProject\..\..\..\MCLibrary\interface
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\UserProject\..\..\..\MCApplication\interface
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\Project\EWARM\UserProject\..\..\..\MCApplication\interface
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\UserProject\..\..\..\MCApplication\inc
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\Project\EWARM\UserProject\..\..\..\MCApplication\inc
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\UserProject\..\..\..\SystemDriveParams
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\Project\EWARM\UserProject\..\..\..\SystemDriveParams
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\UserProject\..\..\..\UILibrary\interface
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\Project\EWARM\UserProject\..\..\..\UILibrary\interface
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\UserProject\..\..\..\UILibrary\inc
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\Project\EWARM\UserProject\..\..\..\UILibrary\inc
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\Project\EWARM\UserProject\..\..\..\PFC_Application\interface
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\Project\EWARM\UserProject\..\..\..\PFC_Application\interface
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\arm\CMSIS\Include
 -I
@@ -38,35 +38,35 @@ C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\arm\inc
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\arm\inc\c
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\Project
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\Project
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Common\Libraries\CMSIS\CMSIS_2_x\Device\ST\STM32F30x\Include
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Common\Libraries\CMSIS\CMSIS_2_x\Device\ST\STM32F30x\Include
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Common\Libraries\STM32F30x_StdPeriph_Driver\inc
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Common\Libraries\STM32F30x_StdPeriph_Driver\inc
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Common\Libraries\STM32F30x_CPAL_Driver\inc
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Common\Libraries\STM32F30x_CPAL_Driver\inc
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Common\Libraries\STM32_EVAL
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Common\Libraries\STM32_EVAL
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Common\Libraries\STM32_EVAL\Common
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Common\Libraries\STM32_EVAL\Common
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Common\Libraries\STM32_EVAL\STM32303C_EVAL
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Common\Libraries\STM32_EVAL\STM32303C_EVAL
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\MCLibrary\interface\common
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\MCLibrary\interface\common
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\MCLibrary\interface
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\MCLibrary\interface
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\MCApplication\interface
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\MCApplication\interface
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\MCApplication\inc
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\MCApplication\inc
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\SystemDriveParams
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\SystemDriveParams
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\UILibrary\interface
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\UILibrary\interface
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\UILibrary\inc
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\UILibrary\inc
 -I
-C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW\Web\PFC_Application\interface
+C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\PFC_Application\interface
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\arm\CMSIS\Include
 -D__CHAR_BITS__=8
