@@ -53,7 +53,7 @@ typedef const struct
   I2C_TypeDef *     i2c_peripheral;
   uint32_t          i2c_clk;
   uint32_t          slave_address;
-  uint16_t          i2c_speed;
+  uint32_t          i2c_speed;
   uint8_t           i2c_evt_irq;
   uint8_t           i2c_err_irq;
 
@@ -61,12 +61,12 @@ typedef const struct
   uint8_t           i2c_scl_clk;
   GPIO_TypeDef *    i2c_scl_port;
   uint32_t          i2c_scl_pin;
-  GPIOMode_TypeDef  i2c_scl_af;
+  uint8_t           i2c_scl_af;
 
   uint8_t           i2c_sda_clk;
   GPIO_TypeDef *    i2c_sda_port;
   uint32_t          i2c_sda_pin;
-  GPIOMode_TypeDef  i2c_sda_af;
+  uint8_t           i2c_sda_af;
 
   uint16_t          ui_irq_num;
   //All the I2C Communication specific interfaces are here
