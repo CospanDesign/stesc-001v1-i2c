@@ -80,11 +80,11 @@
                 </option>
                 <option>
                     <name>OCProductVersion</name>
-                    <state>8.11.3.13977</state>
+                    <state>6.10.5.52324</state>
                 </option>
                 <option>
                     <name>OCDynDriverList</name>
-                    <state>JLINK_ID</state>
+                    <state>STLINK_ID</state>
                 </option>
                 <option>
                     <name>OCLastSavedByProductVersion</name>
@@ -826,7 +826,7 @@
                 </option>
                 <option>
                     <name>CCJLinkInterfaceRadio</name>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>CCJLinkResetList</name>
@@ -996,7 +996,7 @@
                 <option>
                     <name>CCSTLinkResetList</name>
                     <version>3</version>
-                    <state>2</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>CCCpuClockEdit</name>
@@ -1004,7 +1004,7 @@
                 </option>
                 <option>
                     <name>CCSwoClockAuto</name>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>CCSwoClockEdit</name>
@@ -1012,7 +1012,7 @@
                 </option>
                 <option>
                     <name>DoLogfile</name>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>LogFile</name>
@@ -1072,12 +1072,12 @@
                 </option>
                 <option>
                     <name>CCSTLinkUsbSerialNoSelect</name>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>CCSTLinkJtagSpeedList</name>
                     <version>0</version>
-                    <state>2</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>CCSTLinkDAPNumber</name>
@@ -1098,7 +1098,7 @@
                 <debug>1</debug>
                 <option>
                     <name>CThirdPartyDriverDll</name>
-                    <state>Browse to your third-party driver</state>
+                    <state>###Uninitialized###</state>
                 </option>
                 <option>
                     <name>CThirdPartyLogFileCheck</name>
@@ -1144,7 +1144,7 @@
                 </option>
                 <option>
                     <name>CCMSPFetTargetVoltage</name>
-                    <state>3.0</state>
+                    <state>###Uninitialized###</state>
                 </option>
                 <option>
                     <name>CCMSPFetVCCDefault</name>
@@ -1206,11 +1206,11 @@
                 </option>
                 <option>
                     <name>TIPackage</name>
-                    <state>C:\ti\ccs_base</state>
+                    <state></state>
                 </option>
                 <option>
                     <name>BoardFile</name>
-                    <state>$TOOLKIT_DIR$\config\debugger\TexasInstruments\xds\UNKNOWN_XDS100v2_JTAG.dat</state>
+                    <state></state>
                 </option>
                 <option>
                     <name>DoLogfile</name>

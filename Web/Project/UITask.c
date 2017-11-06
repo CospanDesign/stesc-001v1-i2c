@@ -35,6 +35,7 @@
 #include "MCLibraryISRPriorityConf.h"
 #include "USARTParams.h"
 #include "DACParams.h"
+#include "I2C_Params.h"
 #include "UIExportedFunctions.h"
 #include "Parameters conversion.h"
 
@@ -54,6 +55,7 @@
 CUI oLCD = MC_NULL;
 
 CUSART_COM oUSART = MC_NULL;
+CI2C_COM oI2C = MC_NULL;
 CFCP oFCP = MC_NULL;
 CMCP_UI oMCP = MC_NULL;
 
@@ -251,6 +253,16 @@ void UI_TaskInit(uint8_t cfg, uint32_t* pUICfg, uint8_t bMCNum, CMCI oMCIList[],
     UFC_StartCom(oUFC); /* Start transmission */
 #endif
   }  
+#endif
+  
+#if (defined(I2C_COMMUNICATION))
+    oMCP = MCP_NewObject(MC_NULL,&MCPParams);
+    oI2C = I2C_NewObject(&i2c_params);
+    oFCP = FCP_NewObject(&FrameParams_str);
+
+    FCP_Init(oFCP, (CCOM)oI2C);
+    MCP_Init(oMCP, oFCP, oDAC, s_fwVer);
+    UI_Init((CUI)oMCP, bMCNum, oMCIList, oMCTList, pUICfg); /* Init UI and link MC obj */  
 #endif
 }
 

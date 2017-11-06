@@ -3,9 +3,9 @@
   * @file    stm32f30x_MC_it.c 
   * @author  STMCWB ver.4.3.0.16508
   * @version 4.3.0
-  * @date    2017-30-09 18:07:26
+  * @date    2017-10-10 16:22:50
   * @project SDK43x-STM32F303-STEVAL_ESC001V1.stmcx
-  * @path    C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Documents\en.stsw-esc001v1\STSW-ESC001V1\ESC_STMCWB_prj
+  * @path    C:\Users\davem\Downloads\en.stsw-esc001v1\STSW-ESC001V1\ESC_STMCWB_prj
   * @brief   Main Interrupt Service Routines.
   *          This file provides template for all exceptions handler and 
   *          peripherals interrupt service routine, related to Motor Control

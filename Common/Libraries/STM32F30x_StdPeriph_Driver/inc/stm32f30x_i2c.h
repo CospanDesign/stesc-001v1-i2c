@@ -74,7 +74,7 @@ typedef struct
 
   uint32_t I2C_AcknowledgedAddress; /*!< Specifies if 7-bit or 10-bit address is acknowledged.
                                          This parameter can be a value of @ref I2C_acknowledged_address */
-}I2C_InitTypeDef;
+} I2C_InitTypeDef;
 
 /* Exported constants --------------------------------------------------------*/
 

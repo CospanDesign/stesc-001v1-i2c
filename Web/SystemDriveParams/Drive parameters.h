@@ -3,9 +3,9 @@
   * @file    Drive parameters.h
   * @author  STMCWB ver.4.3.0.16508
   * @version 4.3.0
-  * @date    2017-30-09 18:07:26
+  * @date    2017-10-10 16:22:49
   * @project SDK43x-STM32F303-STEVAL_ESC001V1.stmcx
-  * @path    C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Documents\en.stsw-esc001v1\STSW-ESC001V1\ESC_STMCWB_prj
+  * @path    C:\Users\davem\Downloads\en.stsw-esc001v1\STSW-ESC001V1\ESC_STMCWB_prj
   * @brief   This file contains motor parameters needed by STM32 PMSM MC FW  
   *                 library v4.3.0
   ******************************************************************************
@@ -34,7 +34,7 @@
 
 /******** MAIN AND AUXILIARY SPEED/POSITION SENSOR(S) SETTINGS SECTION ********/
 
-#define UID 885065246
+#define UID 887058969
 
 
 /*** Speed sensor selection ***/
@@ -57,7 +57,7 @@
 /* #define DUALDRIVE */
 
 /*** Speed measurement settings ***/
-#define MAX_APPLICATION_SPEED           15000 /*!< rpm, mechanical */
+#define MAX_APPLICATION_SPEED           20000 /*!< rpm, mechanical */
 #define MIN_APPLICATION_SPEED           0 /*!< rpm, mechanical,  
                                                            absolute value */
 #define MEAS_ERRORS_BEFORE_FAULTS       3 /*!< Number of speed  
@@ -100,14 +100,14 @@
                                                             estimates (percentage) */
 /* State observer scaling factors F1 */                    
 #define F1                               16384
-#define F2                               8192
+#define F2                               16384
 
 /* State observer constants */
 #define GAIN1                            -20480
-#define GAIN2                            23092
+#define GAIN2                            16495
 /*Only in case PLL is used, PLL gains */
-#define PLL_KP_GAIN                      1596
-#define PLL_KI_GAIN                      37
+#define PLL_KP_GAIN                      2483
+#define PLL_KI_GAIN                      58
 
 #define OBS_MEAS_ERRORS_BEFORE_FAULTS    3  /*!< Number of consecutive errors   
                                                            on variance test before a speed 
@@ -128,11 +128,11 @@
                                                             variance on speed 
                                                             estimates (percentage) */                                                                                                                
 #define CORD_F1                          16384
-#define CORD_F2                          8192
+#define CORD_F2                          16384
 
 /* State observer constants */
 #define CORD_GAIN1                       -20480
-#define CORD_GAIN2                       23092
+#define CORD_GAIN2                       16495
 
 #define CORD_MEAS_ERRORS_BEFORE_FAULTS   3  /*!< Number of consecutive errors   
                                                            on variance test before a speed 
@@ -143,7 +143,7 @@
 #define CORD_FIFO_DEPTH_01HZ             64  /*!< Depth of the FIFO used  
                                                            to average mechanical speed  
                                                            in dpp format */        
-#define CORD_MAX_ACCEL_DPPP              26  /*!< Maximum instantaneous 
+#define CORD_MAX_ACCEL_DPPP              30  /*!< Maximum instantaneous 
                                                               electrical acceleration (dpp 
                                                               per control period) */
 #define CORD_BEMF_CONSISTENCY_TOL        64  /* Parameter for B-emf 
@@ -235,20 +235,20 @@
 #define PID_FLUX_KD_DEFAULT           100
 
 /* Torque/Flux control loop gains dividers*/
-#define TF_KPDIV                      4096
-#define TF_KIDIV                      8192
+#define TF_KPDIV                      8192
+#define TF_KIDIV                      16384
 #define TF_KDDIV                      8192
 #define TFDIFFERENTIAL_TERM_ENABLING  DISABLE
 
 /* Speed control loop */ 
 #define SPEED_LOOP_FREQUENCY_HZ       200 /*!<Execution rate of speed   
                                                       regulation loop (Hz) */
-#define PID_SPEED_KP_DEFAULT          2752
-#define PID_SPEED_KI_DEFAULT          2839
+#define PID_SPEED_KP_DEFAULT          3465
+#define PID_SPEED_KI_DEFAULT          2750
 #define PID_SPEED_KD_DEFAULT          0
 /* Speed PID parameter dividers */
-#define SP_KPDIV                      64
-#define SP_KIDIV                      2048
+#define SP_KPDIV                      256
+#define SP_KIDIV                      8192
 #define SP_KDDIV                      16
 #define SPD_DIFFERENTIAL_TERM_ENABLING DISABLE
 
@@ -370,11 +370,11 @@
 #define FEED_FORWARD_CURRENT_REG_ENABLING DISABLE
 #define CONSTANT1_Q                    2110463
 #define CONSTANT1_D                    2110463
-#define CONSTANT2_QD                   6080
+#define CONSTANT2_QD                   5212
 
 /*  Maximum Torque Per Ampere strategy parameters */
 #define MTPA_ENABLING                  DISABLE
-#define IQMAX                          3923
+#define IQMAX                          5230
 #define SEGDIV                         0
 #define ANGC                           {0,0,0,0,0,0,0,0}
 #define OFST                           {0,0,0,0,0,0,0,0}
@@ -388,7 +388,7 @@
 #define LCD_JOYSTICK_FUNCTIONALITY       DISABLE
 #define LCD_MODE                         LCD_FULL
 #define START_STOP_BTN                   DISABLE
-#define SERIAL_COMMUNICATION             ENABLE
+#define SERIAL_COMMUNICATION             DISABLE
 #define SERIAL_COM_MODE                  COM_BIDIRECTIONAL
 #define SERIAL_COM_CHANNEL1              MC_PROTOCOL_REG_I_A
 #define SERIAL_COM_CHANNEL2              MC_PROTOCOL_REG_I_A
