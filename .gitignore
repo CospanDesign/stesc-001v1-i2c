@@ -1,30 +1,24 @@
-<<<<<<< HEAD
 # Prerequisites
 *.d
 
-=======
->>>>>>> master
 # Object files
 *.o
 *.ko
 *.obj
 *.elf
 
-<<<<<<< HEAD
 # Linker output
 *.ilk
 *.map
 *.exp
 
-=======
->>>>>>> master
 # Precompiled Headers
 *.gch
 *.pch
 
 # Libraries
 *.lib
-*.a
+#*.a
 *.la
 *.lo
 
@@ -45,7 +39,6 @@
 # Debug files
 *.dSYM/
 *.su
-<<<<<<< HEAD
 *.idb
 *.pdb
 
@@ -57,8 +50,6 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-=======
->>>>>>> master
 *.swp
 *.un~
 *.swp

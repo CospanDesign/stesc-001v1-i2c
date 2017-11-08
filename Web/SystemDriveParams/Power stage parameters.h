@@ -3,7 +3,7 @@
   * @file    Power stage parameters.h
   * @author  STMCWB ver.4.3.0.16508
   * @version 4.3.0
-  * @date    2017-10-10 16:22:49
+  * @date    2017-07-11 16:22:23
   * @project SDK43x-STM32F303-STEVAL_ESC001V1.stmcx
   * @path    C:\Users\davem\Downloads\en.stsw-esc001v1\STSW-ESC001V1\ESC_STMCWB_prj
   * @brief   This file contains motor parameters needed by STM32 PMSM MC FW  
@@ -46,7 +46,7 @@
 #define PHASE_VL_POLARITY             L_ACTIVE_LOW 
 #define PHASE_WL_POLARITY             L_ACTIVE_LOW 
 
-#define HW_DEAD_TIME_NS              500 /*!< Dead-time inserted 
+#define HW_DEAD_TIME_NS              300 /*!< Dead-time inserted 
                                                          by HW if low side signals 
                                                          are not used */
 /********** Inrush current limiter signal section *******/

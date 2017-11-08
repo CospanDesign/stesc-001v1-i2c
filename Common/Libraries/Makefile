@@ -3,7 +3,7 @@ AR=arm-none-eabi-ar
 
 ###########################################
 
-vpath %.c CMSIS/CM3/CoreSupport STM32_EVAL/Common STM32_EVAL STM32_EVAL/STM32303C CMSIS/CMSIS_2_x/DSP_Lib/Source/CommonTables CMSIS/CMSIS_2_x/DSP_Lib/Source/ComplexMathFunctions CMSIS/CMSIS_2_x/DSP_Lib/Source/BasicMathFunctions CMSIS/CMSIS_2_x/DSP_Lib/Source/SupportFunctions CMSIS/CMSIS_2_x/DSP_Lib/Source/StatisticsFunctions CMSIS/CMSIS_2_x/DSP_Lib/Source/ControllerFunctions CMSIS/CMSIS_2_x/DSP_Lib/Source/FastMathFunctions CMSIS/CMSIS_2_x/DSP_Lib/Source/TransformFunctions CMSIS/CMSIS_2_x/DSP_Lib/Source/MatrixFunctions CMSIS/CMSIS_2_x/DSP_Lib/Source/FilteringFunctions STM32F30x_StdPeriph_Driver/src
+vpath %.c CMSIS/CM3/CoreSupport STM32_EVAL/Common STM32_EVAL STM32_EVAL/STM32303C CMSIS/CMSIS_2_x/DSP_Lib/Source/CommonTables CMSIS/CMSIS_2_x/DSP_Lib/Source/ComplexMathFunctions CMSIS/CMSIS_2_x/DSP_Lib/Source/BasicMathFunctions CMSIS/CMSIS_2_x/DSP_Lib/Source/SupportFunctions CMSIS/CMSIS_2_x/DSP_Lib/Source/StatisticsFunctions CMSIS/CMSIS_2_x/DSP_Lib/Source/ControllerFunctions CMSIS/CMSIS_2_x/DSP_Lib/Source/FastMathFunctions CMSIS/CMSIS_2_x/DSP_Lib/Source/TransformFunctions CMSIS/CMSIS_2_x/DSP_Lib/Source/MatrixFunctions CMSIS/CMSIS_2_x/DSP_Lib/Source/FilteringFunctions STM32F30x_StdPeriph_Driver/src CMSIS/CMSIS_2_x/Device/ST/STM32F30x/Source/Templates
 
 CFLAGS  = -g -O2 -Wall
 CFLAGS += -mlittle-endian -mthumb -mcpu=cortex-m4 -march=armv7e-m

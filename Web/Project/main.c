@@ -27,11 +27,15 @@
 
 extern int i2c_debug;
 
+#define I2C_COMMUNICATION ENABLE
+
+/*
 #ifdef I2C_COMMUNICATION
   #undef SERIAL_COMMUNICATION
   //The next line enables serial communication but there is no option for I2C Communication
   #define COM_ENABLE |OPT_COM
 #endif
+*/
 
 /* Includes ------------------------------------------------------------------*/
 /* Pre-compiler coherency check */
@@ -63,8 +67,7 @@ extern int i2c_debug;
 #include "STEVAL_ESC001V1.h"
 /******************************************************************************/
 
-#define I2C_COMMUNICATION ENABLE
-    
+
 #if (I2C_COMMUNICATION == ENABLE)
 #undef SERIAL_COMMUNICATION
 #endif

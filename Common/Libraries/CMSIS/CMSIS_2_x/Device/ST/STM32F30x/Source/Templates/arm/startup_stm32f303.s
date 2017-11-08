@@ -1,4 +1,4 @@
-;******************** (C) COPYRIGHT 2012 STMicroelectronics ********************
+;/******************** (C) COPYRIGHT 2012 STMicroelectronics ********************
 ;* File Name          : startup_stm32f30x.s
 ;* Author             : MCD Application Team
 ;* Version            : V1.0.0
@@ -14,26 +14,37 @@
 ;*                      priority is Privileged, and the Stack is set to Main.
 ;* <<< Use Configuration Wizard in Context Menu >>>
 ;*******************************************************************************
-;
-; Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
-; You may not use this file except in compliance with the License.
-; You may obtain a copy of the License at:
-;
-;        http://www.st.com/software_license_agreement_liberty_v2
-;
-; Unless required by applicable law or agreed to in writing, software
-; distributed under the License is distributed on an "AS IS" BASIS,
-; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-; See the License for the specific language governing permissions and
-; limitations under the License.
-;
+;* 
+;* Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+;* You may not use this file except in compliance with the License.
+;* You may obtain a copy of the License at:
+;* 
+;*        http://www.st.com/software_license_agreement_liberty_v2
+;* 
+;* Unless required by applicable law or agreed to in writing, software 
+;* distributed under the License is distributed on an "AS IS" BASIS, 
+;* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+;* See the License for the specific language governing permissions and
+;* limitations under the License.
+;* 
 ;*******************************************************************************
+;
+;
+; The modules in this file are included in the libraries, and may be replaced
+; by any user-defined modules that define the PUBLIC symbol _program_start or
+; a user defined start symbol.
+; To override the cstartup defined in the library, simply add your modified
+; version to the workbench project.
+;
+; The vector table is normally located at address 0.
+; When debugging in RAM, it can be located in RAM, aligned to at least 2^6.
+; The name "__vector_table" has special meaning for C-SPY:
+; it is where the SP start value is found, and the NVIC vector
+; table register (VTOR) is initialized to this address if != 0.
+;
+; Cortex-M version
+;
 
-; Amount of memory (in bytes) allocated for Stack
-; Tailor this value to your application needs
-; <h> Stack Configuration
-;   <o> Stack Size (in Bytes) <0x0-0xFFFFFFFF:8>
-; </h>
 
 Stack_Size      EQU     0x00000400
 
@@ -407,4 +418,4 @@ __user_initial_stackheap
 
                  END
 
-;************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE*****
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
