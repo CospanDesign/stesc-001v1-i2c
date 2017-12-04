@@ -45,7 +45,7 @@
 */
 
 typedef enum {
-	MCI_BUFFER_EMPTY,                  /*!< If no buffered command has been 
+	MCI_BUFFER_EMPTY = 0,              /*!< If no buffered command has been 
                                              called.*/
 	MCI_COMMAND_NOT_ALREADY_EXECUTED,  /*!< If the buffered command condition 
                                              hasn't already occurred.*/

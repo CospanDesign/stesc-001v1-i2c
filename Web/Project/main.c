@@ -27,11 +27,14 @@
 
 extern int i2c_debug;
 
+#define I2C_DEBUG 1
+
 #ifdef I2C_COMMUNICATION
   #undef SERIAL_COMMUNICATION
   //The next line enables serial communication but there is no option for I2C Communication
   #define COM_ENABLE |OPT_COM
 #endif
+
 
 /* Includes ------------------------------------------------------------------*/
 /* Pre-compiler coherency check */
@@ -215,6 +218,20 @@ int main(void)
     }
     /* End here**************************************************************/
 #endif
+    
+#ifdef I2C_COMMUNICATION
+    /* Start here ***********************************************************/
+    /* GUI, this section is present only if serial communication is enabled.*/
+    if (UI_SerialCommunicationTimeOutHasElapsed())
+    {
+      // Send timeout message
+#if I2C_DEBUG
+#else
+      Exec_UI_IRQ_Handler(0, 6, 0); // Flag 3 = Send timeout error*/
+#endif
+    }
+    /* End here**************************************************************/
+#endif    
 
 #if (defined(LCD_FUNCTIONALITY) || defined(ENABLE_START_STOP_BUTTON))
     /* Start here ***********************************************************/

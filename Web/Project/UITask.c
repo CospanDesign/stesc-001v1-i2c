@@ -58,14 +58,14 @@ CUSART_COM oUSART = MC_NULL;
 CI2C_COM oI2C = MC_NULL;
 CFCP oFCP = MC_NULL;
 CMCP_UI oMCP = MC_NULL;
-
 CUI oDAC = MC_NULL;
-
 CUFC_UI oUFC = MC_NULL;
+
 
 static volatile uint16_t  bUITaskCounter;
 static volatile uint16_t  bCOMTimeoutCounter;
 static volatile uint16_t  bCOMATRTimeCounter = SERIALCOM_ATR_TIME_TICKS;
+
 
 #if defined(STM32F10X_MD)
 #define VECT_TABLE_BASE 0x08010000
@@ -256,13 +256,15 @@ void UI_TaskInit(uint8_t cfg, uint32_t* pUICfg, uint8_t bMCNum, CMCI oMCIList[],
 #endif
   
 #if (defined(I2C_COMMUNICATION))
-    oMCP = MCP_NewObject(MC_NULL,&MCPParams);
+    //oMCP = MCP_NewObject(MC_NULL,&MCPParams);
     oI2C = I2C_NewObject(&i2c_params);
-    oFCP = FCP_NewObject(&FrameParams_str);
+    
+    //oFCP = FCP_NewObject(&FrameParams_str);
 
-    FCP_Init(oFCP, (CCOM)oI2C);
-    MCP_Init(oMCP, oFCP, oDAC, s_fwVer);
-    UI_Init((CUI)oMCP, bMCNum, oMCIList, oMCTList, pUICfg); /* Init UI and link MC obj */  
+    //FCP_Init(oFCP, (CCOM)oI2C);
+    //MCP_Init(oMCP, oFCP, oDAC, s_fwVer);
+    //UI_Init((CUI)oMCP, bMCNum, oMCIList, oMCTList, pUICfg); /* Init UI and link MC obj */  
+    
 #endif
 }
 

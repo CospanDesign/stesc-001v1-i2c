@@ -35,6 +35,8 @@
 #include "UIIRQHandlerPrivate.h"
 #include "UIIRQHandlerClass.h"
 #include "MC.h"
+#include "UITask.h"
+#include "stdlib.h"
 
 #ifdef MC_CLASS_DYNAMIC
   #include "stdlib.h" /* Used for dynamic allocation */
@@ -48,31 +50,26 @@
 
 _CCOM GLOBAL_COM = NULL;
 
-enum I2C_FLAG_ENUM {
-  I2C_TX_READY = 0,
-  I2C_RX_AVAILABLE,
-  I2C_ADDR_MATCH,
-  I2C_NACK_DETECT,
-  I2C_ACK_DETECT,
-  I2C_STOP_DETECT,
-  I2C_TIMEOUT_DETECT,
-  I2C_ERROR_DETECT
-};
+int16_t i2c_speed_max_valueRPM = 30000;    /*!< Maximum value for speed reference from Workbench */
+int16_t i2c_speed_min_valueRPM = 1000;                   /*!< Set the minimum value for speed reference */
+       
+uint8_t temp_count;
 
 enum I2C_STATE_ENUM {
-  I2C_IDLE = 0,
-  I2C_START,
-  I2C_READ_ADDR,
-  I2C_READ_FROM_MASTER,
-  I2C_WRITE_TO_MASTER,
-  I2C_WAIT_FOR_RESPONSE,
-  I2C_STOP
+  I2C_STATE_IDLE = 0,
+  I2C_STATE_START,
+  I2C_STATE_READ_ADDR,
+  I2C_STATE_READ_FROM_MASTER,
+  I2C_STATE_WRITE_TO_MASTER,
+  I2C_STATE_WAIT_FOR_RESPONSE,
+  I2C_STATE_STOP
 };
 
 enum I2C_COMM_REG_ADDR {
   I2C_REG_STATUS = 1,
   I2C_REG_RPM = 2,
-  I2C_REG_TORQUE = 3
+  I2C_REG_TORQUE = 3,
+  I2C_REG_STOP = 4
 };
 
 int i2c_debug = 0;
@@ -141,7 +138,7 @@ XX  I2C_FLAG_BUSY
     Exec_UI_IRQ_Handler(params->ui_irq_num, I2C_ADDR_MATCH, temp);
     I2C_ClearITPendingBit(params->i2c_peripheral, I2C_IT_ADDR);
     //XXX: Execute a local function for I2C Specific UI Behavior (Put the data in the receive buffer)
-    //i2c_struct->state = I2C_START;
+    //i2c_struct->state = I2C_STATE_START;
   }
 
   //Detect a stop condition
@@ -149,7 +146,7 @@ XX  I2C_FLAG_BUSY
     Exec_UI_IRQ_Handler(params->ui_irq_num, I2C_STOP_DETECT, 0);
     I2C_ClearITPendingBit(params->i2c_peripheral, I2C_IT_STOPF);
     //XXX: Execute a local function for I2C Specific UI Behavior Reset the local state machine
-    //i2c_struct->state = I2C_IDLE;
+    //i2c_struct->state = I2C_STATE_IDLE;
   }
 
   //Detect a nack condition
@@ -157,7 +154,7 @@ XX  I2C_FLAG_BUSY
     Exec_UI_IRQ_Handler(params->ui_irq_num, I2C_NACK_DETECT, 0);
     I2C_ClearITPendingBit(params->i2c_peripheral, I2C_IT_NACKF);
     //XXX: Execute a local function for I2C Specific UI Behavior Reset the local state machine
-    //i2c_struct->state = I2C_IDLE;
+    //i2c_struct->state = I2C_STATE_IDLE;
   }
 
   //Error Conditions
@@ -166,7 +163,7 @@ XX  I2C_FLAG_BUSY
     Exec_UI_IRQ_Handler(params->ui_irq_num, I2C_ERROR_DETECT, 0);
     I2C_ClearITPendingBit(params->i2c_peripheral, I2C_IT_BERR);
     //XXX: Execute a local function for I2C Specific UI Behavior Reset the local state machine
-    //i2c_struct->state = I2C_IDLE;
+    //i2c_struct->state = I2C_STATE_IDLE;
   }
 
   //Detect a bus error condition
@@ -174,7 +171,7 @@ XX  I2C_FLAG_BUSY
     Exec_UI_IRQ_Handler(params->ui_irq_num, I2C_ERROR_DETECT, 0);
     I2C_ClearITPendingBit(params->i2c_peripheral, I2C_IT_ARLO);
     //XXX: Execute a local function for I2C Specific UI Behavior Reset the local state machine
-    //i2c_struct->state = I2C_IDLE;
+    //i2c_struct->state = I2C_STATE_IDLE;
   }
 
   //Detect a bus error condition
@@ -182,7 +179,7 @@ XX  I2C_FLAG_BUSY
     Exec_UI_IRQ_Handler(params->ui_irq_num, I2C_ERROR_DETECT, 0);
     I2C_ClearITPendingBit(params->i2c_peripheral, I2C_IT_OVR);
     //XXX: Execute a local function for I2C Specific UI Behavior Reset the local state machine
-    //i2c_struct->state = I2C_IDLE;
+    //i2c_struct->state = I2C_STATE_IDLE;
   }
 
   //Detect a timeout condition
@@ -190,7 +187,7 @@ XX  I2C_FLAG_BUSY
     Exec_UI_IRQ_Handler(params->ui_irq_num, I2C_ERROR_DETECT, 0);
     I2C_ClearITPendingBit(params->i2c_peripheral, I2C_IT_TIMEOUT);
     //XXX: Execute a local function for I2C Specific UI Behavior Reset the local state machine
-    //i2c_struct->state = I2C_IDLE;
+    //i2c_struct->state = I2C_STATE_IDLE;
   }
 
   //Detect a PEC Error condition
@@ -198,7 +195,7 @@ XX  I2C_FLAG_BUSY
     Exec_UI_IRQ_Handler(params->ui_irq_num, I2C_ERROR_DETECT, 0);
     I2C_ClearITPendingBit(params->i2c_peripheral, I2C_IT_PECERR);
     //XXX: Execute a local function for I2C Specific UI Behavior Reset the local state machine
-    //i2c_struct->state = I2C_IDLE;
+    //i2c_struct->state = I2C_STATE_IDLE;
   }
 }
 
@@ -210,8 +207,8 @@ void I2C1_ER_IRQHandler(void){
 /* Private function prototypes -----------------------------------------------*/
 void I2C_HWInit(pI2CParams_t pI2CParams);
 void* I2C_IRQ_Handler(void* this,unsigned char flags, unsigned short rx_data);
-static void I2C_StartReceive(CCOM this);
-static void I2C_StartTransmit(CCOM this);
+static void I2C_STATE_STARTReceive(CCOM this);
+static void I2C_STATE_STARTTransmit(CCOM this);
 
 /**
   * @brief  Creates an object of the class "Physical Layer Communication"
@@ -240,12 +237,12 @@ CI2C_COM I2C_NewObject(pI2CParams_t pI2CParams)
   #endif
 
   _oI2C->pDParams_str = pI2CParams;
-  _oI2C->state = I2C_IDLE;
+  _oI2C->state = I2C_STATE_IDLE;
   _oCOM->DerivedClass = (void*)_oI2C;
 
   //Setup function pointers
-  _oCOM->Methods_str.pStartReceive  = &I2C_StartReceive;
-  _oCOM->Methods_str.pStartTransmit = &I2C_StartTransmit;
+  _oCOM->Methods_str.pStartReceive  = &I2C_STATE_STARTReceive;
+  _oCOM->Methods_str.pStartTransmit = &I2C_STATE_STARTTransmit;
   _oCOM->Methods_str.pIRQ_Handler   = &I2C_IRQ_Handler;
 
   //XXX: Where is the IRQ Interrupt?
@@ -258,6 +255,7 @@ CI2C_COM I2C_NewObject(pI2CParams_t pI2CParams)
   I2C_HWInit(pI2CParams);
 
   GLOBAL_COM = _oCOM;
+  
   return ((CI2C_COM)_oCOM);
 }
 
@@ -294,9 +292,9 @@ void I2C_HWInit(pI2CParams_t pI2CParams)
   
   /* I2C1 interrupt Init */
 
-  NVIC_SetPriority(I2C1_EV_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0));
+  NVIC_SetPriority(I2C1_EV_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 0xF, 0xF));
   NVIC_EnableIRQ(I2C1_EV_IRQn);
-  NVIC_SetPriority(I2C1_ER_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0));
+  NVIC_SetPriority(I2C1_ER_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0xF, 0xF));
   NVIC_EnableIRQ(I2C1_ER_IRQn);
   
   /*
@@ -356,6 +354,7 @@ void* I2C_IRQ_Handler(void* this,unsigned char flags, unsigned short rx_data)
   CMCI cmci = GetMCI(0);
   _CI2C i2c_struct = (_CI2C) GLOBAL_COM->DerivedClass;
   int16_t data;
+  int32_t d32;
   //int32_t torque;
   I2CParams_t * params = i2c_struct->pDParams_str;
 
@@ -365,51 +364,67 @@ void* I2C_IRQ_Handler(void* this,unsigned char flags, unsigned short rx_data)
 //    case (I2C_TX_READY):
 //      break;
 //    case (I2C_RX_AVAILABLE):
-//      i2c_struct->state = I2C_READ_FROM_MASTER;
+//      i2c_struct->state = I2C_STATE_READ_FROM_MASTER;
 //      break;
     case (I2C_ADDR_MATCH):
       if (rx_data == 0) {
         i2c_struct->rx_index = 0;
-        i2c_struct->state = I2C_READ_ADDR;
+        i2c_struct->state = I2C_STATE_READ_ADDR;
       }
       if (rx_data == 1) {
         i2c_struct->tx_index = 0;
-        i2c_struct->tx_buffer[0] = (uint8_t) MCI_GetSTMState(cmci);        
-        switch(i2c_struct->address){
-          case (I2C_REG_STATUS):
-            data = MCI_GetCurrentFaults(cmci);
-            i2c_struct->tx_buffer[1] = (uint8_t) (data >> 8) & 0xFF;
-            i2c_struct->tx_buffer[2] = (uint8_t) (data >> 0) & 0xFF;
-            i2c_struct->tx_count = 3;
-          break;
-          case (I2C_REG_RPM):
-
+        temp_count = 0;
+        //i2c_struct->tx_buffer[i2c_struct->tx_index] = (uint8_t) MCI_GetSTMState(cmci);  
+        i2c_struct->tx_buffer[temp_count] = (uint8_t) MCI_GetSTMState(cmci);  
+        temp_count++;
+        
+        i2c_struct->tx_buffer[temp_count] = MCI_IsCommandAcknowledged(cmci);
+        temp_count++;  
+        
+//        switch(i2c_struct->address){
+//          case (I2C_REG_STATUS):
+            data = MCI_GetPhaseCurrentAmplitude(cmci);            
+            i2c_struct->tx_buffer[temp_count] = (uint8_t) (data >> 8) & 0xFF;
+            temp_count++;
+            i2c_struct->tx_buffer[temp_count] = (uint8_t) (data >> 0) & 0xFF;
+            temp_count++;
+//          case (I2C_REG_RPM):
+            data = MCI_GetPhaseVoltageAmplitude(cmci);
+            i2c_struct->tx_buffer[temp_count] = (uint8_t) (data >> 8) & 0xFF;
+            temp_count++;
+            i2c_struct->tx_buffer[temp_count] = (uint8_t) (data >> 0) & 0xFF;
+            temp_count++;
+//          case (I2C_REG_TORQUE):
             data = MCI_GetAvrgMecSpeed01Hz(cmci);
-            i2c_struct->tx_buffer[1] = (uint8_t) (data >> 8) & 0xFF;
-            i2c_struct->tx_buffer[2] = (uint8_t) (data >> 0) & 0xFF;
-            i2c_struct->tx_count = 3;
-          break;
-          case (I2C_REG_TORQUE):
-            //data = MCI_GetTorque(cmci);
-            data = MCI_GetTeref(cmci);
-            i2c_struct->tx_buffer[1] = (uint8_t) (data >> 8) & 0xFF;
-            i2c_struct->tx_buffer[2] = (uint8_t) (data >> 0) & 0xFF;
-            i2c_struct->tx_count = 3;            
-          break;
-          default:
-            //No Command To Execute
-            i2c_struct->tx_buffer[1] = 0xFF;
-            i2c_struct->tx_count = 2;            
-          break;
-        }
+            i2c_struct->tx_buffer[temp_count] = (uint8_t) (data >> 8) & 0xFF;
+            temp_count++;
+            i2c_struct->tx_buffer[temp_count] = (uint8_t) (data >> 0) & 0xFF;
+            temp_count++;
+//          case (mechanical speed reference);
+            data = MCI_GetMecSpeedRef01Hz(cmci);
+            i2c_struct->tx_buffer[temp_count] = (uint8_t) (data >> 8) & 0xFF;
+            temp_count++;
+            i2c_struct->tx_buffer[temp_count] = (uint8_t) (data >> 0) & 0xFF;
+            temp_count++; 
+            data = MCI_GetLastRampFinalSpeed(cmci);
+            i2c_struct->tx_buffer[temp_count] = (uint8_t) (data >> 8) & 0xFF;
+            temp_count++;
+            i2c_struct->tx_buffer[temp_count] = (uint8_t) (data >> 0) & 0xFF;
+            temp_count++;             
+//          case (Get command status)
+           
+//          default:
+//            break;
+//        }
+        i2c_struct->tx_index = 0;
         I2C_SendData(params->i2c_peripheral, i2c_struct->tx_buffer[i2c_struct->tx_index]);
         i2c_struct->tx_index++;
-        i2c_struct->state = I2C_WRITE_TO_MASTER;
+        i2c_struct->state = I2C_STATE_WRITE_TO_MASTER;
       }
       break;
 //    case (I2C_NACK_DETECT):
 //      //XXX: What is a master nack do again??
-//      i2c_struct->state = I2C_WRITE_TO_MASTER;
+//      i2c_struct->state = I2C_STATE_WRITE_TO_MASTER;
 //      break;
       
 //    case (I2C_STOP_DETECT):
@@ -429,12 +444,15 @@ void* I2C_IRQ_Handler(void* this,unsigned char flags, unsigned short rx_data)
 //    case (I2C_ACK_DETECT):
 //      //XXX: What is a master nack do again??
 //      break;
+    case (I2C_COMM_TIMEOUT_DETECTED):
+      MCI_StopMotor(cmci);
+      break;
     case (I2C_TIMEOUT_DETECT):
-      i2c_struct->state = I2C_IDLE;
+      i2c_struct->state = I2C_STATE_IDLE;
       i2c_debug = -1;
       break;
    case (I2C_ERROR_DETECT):
-      i2c_struct->state = I2C_IDLE;
+      i2c_struct->state = I2C_STATE_IDLE;
       i2c_debug = -1;      
       break;
     default:
@@ -442,32 +460,96 @@ void* I2C_IRQ_Handler(void* this,unsigned char flags, unsigned short rx_data)
   }
 
   switch (i2c_struct->state){
-    case (I2C_IDLE):
+    case (I2C_STATE_IDLE):
       break;
-    case (I2C_READ_ADDR):
+    case (I2C_STATE_READ_ADDR):
       if (flags == I2C_RX_AVAILABLE) {
         i2c_struct->address = rx_data;
-        i2c_struct->state = I2C_READ_FROM_MASTER;
+        i2c_struct->state = I2C_STATE_READ_FROM_MASTER;
       }
       break;
-    case (I2C_READ_FROM_MASTER):
+    case (I2C_STATE_READ_FROM_MASTER):
       if (flags == I2C_RX_AVAILABLE) {
         i2c_struct->rx_buffer[i2c_struct->rx_index] = rx_data;
         i2c_struct->rx_index++;
       }
-      break;
-    case (I2C_WRITE_TO_MASTER):
+      switch(i2c_struct->address){
+        case (I2C_REG_RPM):
+          if (i2c_struct->rx_index >= 4){
+          //data = (i2c_struct->rx_buffer[0] << 8) | (i2c_struct->rx_buffer[1]);
+          d32 = (i2c_struct->rx_buffer[0] << 24) | (i2c_struct->rx_buffer[1] << 16) | (i2c_struct->rx_buffer[2] << 8) | (i2c_struct->rx_buffer[3]);
+          if (abs(d32) < i2c_speed_min_valueRPM){
+            if (d32 < 0){
+              d32 = -i2c_speed_min_valueRPM;
+            }
+            d32 = i2c_speed_min_valueRPM;
+          }
+          else if (abs(d32) > i2c_speed_max_valueRPM){
+            if (d32 < 0){
+              d32 = -i2c_speed_max_valueRPM;
+            }            
+            d32 = i2c_speed_max_valueRPM;
+          }
+          data = d32 / 6;
+          MCI_ExecSpeedRamp(cmci, data, 0);
+          //MCI_ExecSpeedRamp(cmci, data, 0);
+          switch(MCI_GetSTMState(cmci)){
+          case (ICLWAIT):
+            //Nothing to do, must wait until this is over
+            //What is ICL??
+            break;
+          case (IDLE):
+            //Can go to IDLE Start or Alignment Sequence
+            MCI_StartMotor(cmci);
+            break;
+          case (IDLE_ALIGNMENT):
+          case (ALIGN_CHARGE_BOOT_CAP):
+          case (ALIGN_OFFSET_CALIB):
+          case (ALIGN_CLEAR):
+          case (ALIGNMENT):
+          case (ANY_STOP):        
+            break;
+          case (IDLE_START):
+          case (CHARGE_BOOT_CAP):
+          case (OFFSET_CALIB):
+          case (CLEAR):
+          case (START):
+          case (START_RUN):
+            break;            
+          case (RUN):
+            break;
+          case (STOP):
+          case (STOP_IDLE):
+          case (FAULT_NOW):
+          case (FAULT_OVER):
+            break;
+          default:
+            break;
+          }
+          UI_SerialCommunicationTimeOutStop();
+
+          UI_SerialCommunicationTimeOutStart();
+        break;
+        case (I2C_REG_STOP):
+          //MCI_StopSpeedRamp(cmci);
+          MCI_StopMotor(cmci);
+        break;
+        default:
+        break;
+      }
+      }
+    case (I2C_STATE_WRITE_TO_MASTER):
       if (flags == I2C_TX_READY){
         I2C_SendData(params->i2c_peripheral, i2c_struct->tx_buffer[i2c_struct->tx_index]);
         i2c_struct->tx_index++;
       }
       break;
-    case (I2C_WAIT_FOR_RESPONSE):
+    case (I2C_STATE_WAIT_FOR_RESPONSE):
       break;
-    case (I2C_STOP):
+    case (I2C_STATE_STOP):
       break;
     default:
-      i2c_struct->state = I2C_IDLE;
+      i2c_struct->state = I2C_STATE_IDLE;
       break;
   }
   
@@ -479,7 +561,7 @@ void* I2C_IRQ_Handler(void* this,unsigned char flags, unsigned short rx_data)
   * @param  this: COM object
   * @retval None
   */
-static void I2C_StartReceive(CCOM this)
+static void I2C_STATE_STARTReceive(CCOM this)
 {
   //I2C_ITConfig(((_CI2C)(((_CCOM)this)->DerivedClass))->pDParams_str->I2Cx, I2C_IT_RXNE, ENABLE);
 }
@@ -489,7 +571,7 @@ static void I2C_StartReceive(CCOM this)
   * @param  this: COM object
   * @retval None
   */
-static void I2C_StartTransmit(CCOM this)
+static void I2C_STATE_STARTTransmit(CCOM this)
 {
   //I2C_ITConfig(((_CI2C)(((_CCOM)this)->DerivedClass))->pDParams_str->I2Cx, I2C_IT_TXE, ENABLE);
 }

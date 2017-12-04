@@ -43,6 +43,18 @@
 * @{
 */
 
+enum I2C_FLAG_ENUM {
+  I2C_TX_READY = 0,
+  I2C_RX_AVAILABLE = 1,
+  I2C_ADDR_MATCH = 2,
+  I2C_NACK_DETECT = 3,
+  I2C_ACK_DETECT = 4,
+  I2C_STOP_DETECT = 5,
+  I2C_COMM_TIMEOUT_DETECTED = 6,
+  I2C_TIMEOUT_DETECT = 7,
+  I2C_ERROR_DETECT = 8
+};
+
 /* Exported types ------------------------------------------------------------*/
 /**
   * @brief  UserInterface class parameters definition

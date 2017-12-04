@@ -3,7 +3,7 @@
   * @file    PMSM motor parameters.h
   * @author  STMCWB ver.4.3.0.16508
   * @version 4.3.0
-  * @date    2017-10-10 16:22:49
+  * @date    2017-20-10 17:07:42
   * @project SDK43x-STM32F303-STEVAL_ESC001V1.stmcx
   * @path    C:\Users\davem\Downloads\en.stsw-esc001v1\STSW-ESC001V1\ESC_STMCWB_prj
   * @brief   This file contains motor parameters needed by STM32 PMSM MC FW
@@ -36,8 +36,8 @@
 
 /***************** MOTOR ELECTRICAL PARAMETERS  ******************************/
 #define POLE_PAIR_NUM          7 /* Number of motor pole pairs */
-#define RS                     0.10 /* Stator resistance , ohm*/
-#define LS                     0.000010 /* Stator inductance, H
+#define RS                     0.07 /* Stator resistance , ohm*/
+#define LS                     0.000014 /* Stator inductance, H
                                                  For I-PMSM it is equal to Lq */
 
 /* When using Id = 0, NOMINAL_CURRENT is utilized to saturate the output of the
@@ -48,10 +48,10 @@
                                    *Amplifying network gain)/(MCU supply voltage/2)
 */
 
-#define NOMINAL_CURRENT         5230
-#define MOTOR_MAX_SPEED_RPM     20000 /*!< Maximum rated speed  */
-#define MOTOR_VOLTAGE_CONSTANT  0.4 /*!< Volts RMS ph-ph /kRPM */
-#define ID_DEMAG                -5230 /*!< Demagnetization current */
+#define NOMINAL_CURRENT         17436
+#define MOTOR_MAX_SPEED_RPM     64000 /*!< Maximum rated speed  */
+#define MOTOR_VOLTAGE_CONSTANT  0.6 /*!< Volts RMS ph-ph /kRPM */
+#define ID_DEMAG                -17436 /*!< Demagnetization current */
 
 /***************** MOTOR SENSORS PARAMETERS  ******************************/
 /* Motor sensors parameters are always generated but really meaningful only

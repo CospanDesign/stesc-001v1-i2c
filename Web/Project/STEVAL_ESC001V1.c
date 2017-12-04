@@ -265,6 +265,7 @@ void pwm_start()
   /* User defined code */
   switch (User_State)
   {
+    /*
    case SM_ARMING:
     {
       Ton_value_previous = 0;
@@ -287,6 +288,7 @@ void pwm_start()
          ARMING_counter  = 0;
        }
       }
+    */
     break;  
    case SM_ARMED:
     {
@@ -398,12 +400,16 @@ void pwm_start()
 void PWM_FC_control()
 {
 #ifdef PWM_ESC  
+ 
+  
   if(MCI_GetSTMState(oMCI)== FAULT_OVER)
   {
    MCI_FaultAcknowledged(oMCI);
    User_State = SM_STOP;   
    ARMING_counter  = 0;
   }
+
+
  
   pwm_start();
 #endif

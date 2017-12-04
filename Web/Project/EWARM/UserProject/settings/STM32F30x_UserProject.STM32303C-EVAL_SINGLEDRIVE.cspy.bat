@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\Project\EWARM\UserProject\settings\STM32F30x_UserProject.STM32303C-EVAL_SINGLEDRIVE.general.xcl" --backend -f "C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\Project\EWARM\UserProject\settings\STM32F30x_UserProject.STM32303C-EVAL_SINGLEDRIVE.driver.xcl" 
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "C:\Users\davem\Documents\GitHub\stesc-001v1-i2c\Web\Project\EWARM\UserProject\settings\STM32F30x_UserProject.STM32303C-EVAL_SINGLEDRIVE.general.xcl" --backend -f "C:\Users\davem\Documents\GitHub\stesc-001v1-i2c\Web\Project\EWARM\UserProject\settings\STM32F30x_UserProject.STM32303C-EVAL_SINGLEDRIVE.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\Project\EWARM\UserProject\settings\STM32F30x_UserProject.STM32303C-EVAL_SINGLEDRIVE.general.xcl" "--debug_file=%~1" --backend -f "C:\Users\davem\OneDrive\Documents\GitHub\stesc_i2c\Web\Project\EWARM\UserProject\settings\STM32F30x_UserProject.STM32303C-EVAL_SINGLEDRIVE.driver.xcl" 
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "C:\Users\davem\Documents\GitHub\stesc-001v1-i2c\Web\Project\EWARM\UserProject\settings\STM32F30x_UserProject.STM32303C-EVAL_SINGLEDRIVE.general.xcl" "--debug_file=%~1" --backend -f "C:\Users\davem\Documents\GitHub\stesc-001v1-i2c\Web\Project\EWARM\UserProject\settings\STM32F30x_UserProject.STM32303C-EVAL_SINGLEDRIVE.driver.xcl" 
 
 @echo off 
 :end

@@ -23,9 +23,9 @@ param([String]$debugfile = "");
 
 if ($debugfile -eq "")
 {
-& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW_I2C_TEST\Web\Project\EWARM\settings\STM32F30x_MC Library.STM32F303_SINGLE_DRIVE.general.xcl" --backend -f "C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW_I2C_TEST\Web\Project\EWARM\settings\STM32F30x_MC Library.STM32F303_SINGLE_DRIVE.driver.xcl" 
+& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "C:\Users\davem\Documents\GitHub\stesc-001v1-i2c\Web\Project\EWARM\settings\STM32F30x_MC Library.STM32F303_SINGLE_DRIVE.general.xcl" --backend -f "C:\Users\davem\Documents\GitHub\stesc-001v1-i2c\Web\Project\EWARM\settings\STM32F30x_MC Library.STM32F303_SINGLE_DRIVE.driver.xcl" 
 }
 else
 {
-& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW_I2C_TEST\Web\Project\EWARM\settings\STM32F30x_MC Library.STM32F303_SINGLE_DRIVE.general.xcl" --debug_file=$debugfile --backend -f "C:\Users\davem\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW_I2C_TEST\Web\Project\EWARM\settings\STM32F30x_MC Library.STM32F303_SINGLE_DRIVE.driver.xcl" 
+& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "C:\Users\davem\Documents\GitHub\stesc-001v1-i2c\Web\Project\EWARM\settings\STM32F30x_MC Library.STM32F303_SINGLE_DRIVE.general.xcl" --debug_file=$debugfile --backend -f "C:\Users\davem\Documents\GitHub\stesc-001v1-i2c\Web\Project\EWARM\settings\STM32F30x_MC Library.STM32F303_SINGLE_DRIVE.driver.xcl" 
 }
