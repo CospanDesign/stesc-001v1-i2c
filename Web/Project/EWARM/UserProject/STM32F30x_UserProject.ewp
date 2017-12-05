@@ -32,11 +32,11 @@
                 </option>
                 <option>
                     <name>Input description</name>
-                    <state>Full formatting.</state>
+                    <state>Full formatting, with multibyte support.</state>
                 </option>
                 <option>
                     <name>Output description</name>
-                    <state>Full formatting.</state>
+                    <state>Full formatting, with multibyte support.</state>
                 </option>
                 <option>
                     <name>GOutputBinary</name>
@@ -281,7 +281,7 @@
                 <option>
                     <name>CCAllowList</name>
                     <version>1</version>
-                    <state>11111110</state>
+                    <state>00000000</state>
                 </option>
                 <option>
                     <name>CCDebugInfo</name>
@@ -375,7 +375,7 @@
                 </option>
                 <option>
                     <name>CCOptLevel</name>
-                    <state>3</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>CCOptStrategy</name>
@@ -384,7 +384,7 @@
                 </option>
                 <option>
                     <name>CCOptLevelSlave</name>
-                    <state>3</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>CompilerMisraRules98</name>
@@ -4334,7 +4334,7 @@
                     </excluded>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\mc library compiled\Exe\MC_Library_STM32F303_single_drive.a</name>
+                    <name>$PROJ_DIR$\..\MC Library Compiled\Exe\MC_Library_STM32F303_single_drive.a</name>
                     <excluded>
                         <configuration>STM32303C-EVAL_DUALDRIVE</configuration>
                         <configuration>STM32F302_SINGLEDRIVE</configuration>

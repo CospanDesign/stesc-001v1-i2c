@@ -3,7 +3,7 @@
   * @file    Control stage parameters.h
   * @author  STMCWB ver.4.3.0.16508
   * @version 4.3.0
-  * @date    2017-20-10 17:07:42
+  * @date    2017-05-12 16:51:14
   * @project SDK43x-STM32F303-STEVAL_ESC001V1.stmcx
   * @path    C:\Users\davem\Downloads\en.stsw-esc001v1\STSW-ESC001V1\ESC_STMCWB_prj
   * @brief   This file contains motor parameters needed by STM32 PMSM MC FW  
@@ -62,7 +62,7 @@
 #define EXT_CLK_8_MHZ
 
 /* Maximum modulation index */
-#define MAX_MODULATION_93_PER_CENT
+#define MAX_MODULATION_94_PER_CENT
                          
 /************************ DIGITAL I/O DEFINITION SECTION  *********************/
 /* PWM Timer section */
@@ -350,32 +350,6 @@
 #define START_STOP_POLARITY              DIN_ACTIVE_LOW
 
 /* ##@@_USER_CODE_START_##@@ */
-/** Bus and temperature readings **/ 
-  #undef VBUS_ADC
-    #define VBUS_ADC                        ADC3
-  #undef REGCONVADC
-    #define REGCONVADC                      VBUS_ADC
-  #undef VBUS_CHANNEL
-    #define VBUS_CHANNEL                    ADC_Channel_5
-  #undef VBUS_GPIO_PORT
-    #define VBUS_GPIO_PORT                  GPIOB
-  #undef VBUS_GPIO_PIN
-    #define VBUS_GPIO_PIN                   GPIO_Pin_13
-  #undef VBUS_ADC_SAMPLING_TIME
-    #define VBUS_ADC_SAMPLING_TIME          19
-   
-  #undef TEMP_FDBK_ADC
-    #define TEMP_FDBK_ADC                   ADC1
-  #define   REGCONVADC_ESC                 TEMP_FDBK_ADC  
-
-  #undef TEMP_FDBK_CHANNEL
-    #define TEMP_FDBK_CHANNEL               ADC_Channel_4
-  #undef TEMP_FDBK_GPIO_PORT
-    #define TEMP_FDBK_GPIO_PORT             GPIOA
-  #undef TEMP_FDBK_GPIO_PIN
-    #define TEMP_FDBK_GPIO_PIN              GPIO_Pin_3
-  #undef TEMP_ADC_SAMPLING_TIME
-    #define TEMP_ADC_SAMPLING_TIME          19
 /* ##@@_USER_CODE_END_##@@ */
 
 #endif /*__CONTROL_STAGE_PARAMETERS_H*/

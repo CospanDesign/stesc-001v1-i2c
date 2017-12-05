@@ -31,18 +31,19 @@
 
 typedef I2CParams_t DParams_t, *pDParams_t; 
 
-#define BUFFER_DEPTH 100
+#define BUFFER_DEPTH 8
 
 typedef struct
 {
   uint8_t state;
   uint8_t address;
   uint8_t rx_index;
-  uint8_t rx_buffer[BUFFER_DEPTH];
-  uint8_t tx_index;
-  uint8_t tx_buffer[BUFFER_DEPTH];
+  uint8_t tx_index;  
   uint8_t tx_count;
   pDParams_t pDParams_str;
+  uint8_t rx_buffer[BUFFER_DEPTH];
+  uint8_t tx_buffer[BUFFER_DEPTH];
+
 }_CI2C_t, *_CI2C;
 
 #endif /* __I2C_COM_H */

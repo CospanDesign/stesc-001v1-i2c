@@ -130,6 +130,7 @@ void SysTick_Configuration(void);
 CMCI oMCI[MC_NUM];
 CMCT oMCT[MC_NUM];
 uint32_t wConfig[MC_NUM] = {UI_CONFIG_M1,UI_CONFIG_M2};
+volatile uint8_t i2c_addr_off = 0;
 
 
 /* Private macro -------------------------------------------------------------*/
@@ -168,6 +169,12 @@ int main(void)
   STSPIN32F0_Init();
 #endif
 
+
+
+
+
+  
+
   /*MCInterface and MCTuning boot*/
   MCboot(oMCI,oMCT);
 
@@ -180,6 +187,14 @@ int main(void)
     PFC_Boot(oMCT[0],(CMCT)MC_NULL, (int16_t *)MC_NULL);
   #endif
 
+  GPIO_InitTypeDef GPIO_InitStructure;
+  GPIO_StructInit(&GPIO_InitStructure);
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3 | GPIO_Pin_4;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+  GPIO_Init(GPIOB, &GPIO_InitStructure);
+  i2c_addr_off = GPIO_ReadInputData(GPIOB);
+  i2c_addr_off = (i2c_addr_off >> 3) & 0x3;
+    
   /*Systick configuration.*/
   SysTick_Configuration();
 
@@ -203,22 +218,7 @@ int main(void)
 
   while(1)
   {
-#ifdef SERIAL_COMMUNICATION
-    /* Start here ***********************************************************/
-    /* GUI, this section is present only if serial communication is enabled.*/
-    if (UI_SerialCommunicationTimeOutHasElapsed())
-    {
-      // Send timeout message
-      Exec_UI_IRQ_Handler(UI_IRQ_USART,3,0); // Flag 3 = Send timeout error*/
-    }
-    if (UI_SerialCommunicationATRTimeHasElapsed())
-    {
-      // Send ATR message
-      Exec_UI_IRQ_Handler(UI_IRQ_USART,4,0); // Flag 4 = Send ATR message*/
-    }
-    /* End here**************************************************************/
-#endif
-    
+
 #ifdef I2C_COMMUNICATION
     /* Start here ***********************************************************/
     /* GUI, this section is present only if serial communication is enabled.*/
@@ -233,73 +233,7 @@ int main(void)
     /* End here**************************************************************/
 #endif    
 
-#if (defined(LCD_FUNCTIONALITY) || defined(ENABLE_START_STOP_BUTTON))
-    /* Start here ***********************************************************/
-    /* GUI, this section is present only if LCD or start/stop button is enabled. */
-    if (UI_IdleTimeHasElapsed())
-    {
-      UI_SetIdleTime(UI_TASK_OCCURENCE_TICKS);
 
-#ifdef LCD_FUNCTIONALITY
-      UI_LCDRefresh();
-#endif
-
-#ifdef ENABLE_START_STOP_BUTTON
-      {
-        /* Chek status of Start/Stop button and performs debounce management */
-        static uint16_t hKeyButtonDebounceCounter = 0u;
-        if ((GPIO_ReadInputDataBit(START_STOP_GPIO_PORT, START_STOP_GPIO_PIN) == START_STOP_POLARITY) &&
-            (hKeyButtonDebounceCounter == 0))
-        {
-
-#ifdef SINGLEDRIVE
-          /* Queries the STM and a command start or stop depending on the state. */
-          /* It can be added to MCI functionality */
-          if (MCI_GetSTMState(oMCI[M1]) == IDLE)
-          {
-            MCI_StartMotor(oMCI[M1]);
-          }
-          else
-          {
-            MCI_StopMotor(oMCI[M1]);
-          }
-#endif
-
-#ifdef DUALDRIVE
-          /* Stop both motors */
-          MCI_StopMotor(oMCI[M1]);
-          MCI_StopMotor(oMCI[M2]);
-#endif
-
-          hKeyButtonDebounceCounter = 4u; /* Debounce time xx * LCD Clock */
-        }
-        if (hKeyButtonDebounceCounter > 0)
-        {
-          hKeyButtonDebounceCounter--;
-        }
-      }
-#endif
-
-    }
-    /* End here**************************************************************/
-#endif
-
-/********************************   EXAMPLE AREA ******************************/
-#if defined(EXAMPLE_POTENTIOMETER)
-   potentiometer_start();
-#endif
-#if defined(EXAMPLE_RAMP)
-   ramp_start();
-#endif
-#if defined(EXAMPLE_PI)
-   NewPIval_start();
-#endif
-#if defined(EXAMPLE_CONTROLMODE)
-   TqSpeedMode_start();
-#endif
-#if defined(EXAMPLE_SPEEDMONITOR)
-   speedmonitor_start();
-#endif
 /*****************************************************************************/
 
 #ifdef USE_STGAP1S

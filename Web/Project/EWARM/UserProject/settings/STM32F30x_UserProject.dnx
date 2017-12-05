@@ -20,7 +20,7 @@
         <stlinkResetStrategy>1</stlinkResetStrategy>
     </StLinkDriver>
     <DebugChecksum>
-        <Checksum>51301368</Checksum>
+        <Checksum>1729658187</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -136,7 +136,8 @@
     <Breakpoints2>
         <Bp0>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\..\..\..\..\..\..\..\Dropbox\hardware\Altium\MIT Drone\MIT TX1 Drone Power Board\Rev D\Software\ESC_STM32_FOC_FW_I2C}.259.5" 0 0 1 "" 0 "" 0</Bp0>
         <Bp1>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\..\..\..\..\..\..\OneDrive\Documents\GitHub\stesc_i2c\Web\Project\UITask.c}.121.1" 0 0 1 "" 0 "" 0</Bp1>
-        <Count>2</Count>
+        <Bp2>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\..\..\UILibrary\src\I2C_PhysicalLayerCommunication_Class.c}.352.13" 0 0 1 "" 0 "" 0</Bp2>
+        <Count>3</Count>
     </Breakpoints2>
     <LogFile>
         <LoggingEnabled>_ 0</LoggingEnabled>

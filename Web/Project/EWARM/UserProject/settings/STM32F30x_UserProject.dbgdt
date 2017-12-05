@@ -1166,7 +1166,7 @@
                     <item>I2C_COMpool[0]</item>
                     <item>d32</item>
                     <item>data</item>
-                    <item></item>
+                    <item />
                 </expressions>
                 <col-names>
                     <item>Expression</item>

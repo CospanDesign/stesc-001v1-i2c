@@ -3,7 +3,7 @@
   * @file    Drive parameters.h
   * @author  STMCWB ver.4.3.0.16508
   * @version 4.3.0
-  * @date    2017-20-10 17:07:42
+  * @date    2017-05-12 16:51:13
   * @project SDK43x-STM32F303-STEVAL_ESC001V1.stmcx
   * @path    C:\Users\davem\Downloads\en.stsw-esc001v1\STSW-ESC001V1\ESC_STMCWB_prj
   * @brief   This file contains motor parameters needed by STM32 PMSM MC FW  
@@ -34,7 +34,7 @@
 
 /******** MAIN AND AUXILIARY SPEED/POSITION SENSOR(S) SETTINGS SECTION ********/
 
-#define UID 888061662
+#define UID 894560673
 
 
 /*** Speed sensor selection ***/
@@ -57,7 +57,7 @@
 /* #define DUALDRIVE */
 
 /*** Speed measurement settings ***/
-#define MAX_APPLICATION_SPEED           64000 /*!< rpm, mechanical */
+#define MAX_APPLICATION_SPEED           48000 /*!< rpm, mechanical */
 #define MIN_APPLICATION_SPEED           0 /*!< rpm, mechanical,  
                                                            absolute value */
 #define MEAS_ERRORS_BEFORE_FAULTS       3 /*!< Number of speed  
@@ -99,15 +99,15 @@
                                                             variance on speed 
                                                             estimates (percentage) */
 /* State observer scaling factors F1 */                    
-#define F1                               8192
+#define F1                               16384
 #define F2                               16384
 
 /* State observer constants */
-#define GAIN1                            -11264
-#define GAIN2                            4954
+#define GAIN1                            -22821
+#define GAIN2                            9526
 /*Only in case PLL is used, PLL gains */
-#define PLL_KP_GAIN                      7945
-#define PLL_KI_GAIN                      187
+#define PLL_KP_GAIN                      5958
+#define PLL_KI_GAIN                      140
 
 #define OBS_MEAS_ERRORS_BEFORE_FAULTS    3  /*!< Number of consecutive errors   
                                                            on variance test before a speed 
@@ -127,12 +127,12 @@
 #define CORD_VARIANCE_THRESHOLD          4  /*!<Maxiumum accepted 
                                                             variance on speed 
                                                             estimates (percentage) */                                                                                                                
-#define CORD_F1                          8192
+#define CORD_F1                          16384
 #define CORD_F2                          16384
 
 /* State observer constants */
-#define CORD_GAIN1                       -11264
-#define CORD_GAIN2                       4954
+#define CORD_GAIN1                       -22821
+#define CORD_GAIN2                       9526
 
 #define CORD_MEAS_ERRORS_BEFORE_FAULTS   3  /*!< Number of consecutive errors   
                                                            on variance test before a speed 
@@ -217,7 +217,7 @@
 #define PWM_FREQUENCY                    30000
  
 #define LOW_SIDE_SIGNALS_ENABLING        LS_PWM_TIMER
-#define SW_DEADTIME_NS                   800 /*!< Dead-time to be inserted  
+#define SW_DEADTIME_NS                   700 /*!< Dead-time to be inserted  
                                                            by FW, only if low side 
                                                            signals are enabled */
 #define HIGH_SIDE_IDLE_STATE              TURN_OFF /*!< TURN_OFF, TURN_ON */
@@ -227,11 +227,11 @@
 #define REGULATION_EXECUTION_RATE     1    /*!< FOC execution rate in 
                                                            number of PWM cycles */     
 /* Gains values for torque and flux control loops */
-#define PID_TORQUE_KP_DEFAULT         2155       
-#define PID_TORQUE_KI_DEFAULT         1437
+#define PID_TORQUE_KP_DEFAULT         2874       
+#define PID_TORQUE_KI_DEFAULT         1642
 #define PID_TORQUE_KD_DEFAULT         100
-#define PID_FLUX_KP_DEFAULT           2155
-#define PID_FLUX_KI_DEFAULT           1437
+#define PID_FLUX_KP_DEFAULT           2874
+#define PID_FLUX_KI_DEFAULT           1642
 #define PID_FLUX_KD_DEFAULT           100
 
 /* Torque/Flux control loop gains dividers*/
@@ -243,12 +243,12 @@
 /* Speed control loop */ 
 #define SPEED_LOOP_FREQUENCY_HZ       200 /*!<Execution rate of speed   
                                                       regulation loop (Hz) */
-#define PID_SPEED_KP_DEFAULT          2310
-#define PID_SPEED_KI_DEFAULT          2035
+#define PID_SPEED_KP_DEFAULT          3147
+#define PID_SPEED_KI_DEFAULT          2518
 #define PID_SPEED_KD_DEFAULT          0
 /* Speed PID parameter dividers */
 #define SP_KPDIV                      256
-#define SP_KIDIV                      8192
+#define SP_KIDIV                      4096
 #define SP_KDDIV                      16
 #define SPD_DIFFERENTIAL_TERM_ENABLING DISABLE
 
@@ -293,27 +293,27 @@
 /* Sensor-less rev-up sequence */
 #define STARTING_ANGLE_DEG             90  /*!< degrees [0...359] */
 /* Phase 1 */
-#define PHASE1_DURATION                0 /*milliseconds */
+#define PHASE1_DURATION                1000 /*milliseconds */
 #define PHASE1_FINAL_SPEED_RPM         0 /* rpm */
 #define PHASE1_FINAL_CURRENT           0
 /* Phase 2 */
-#define PHASE2_DURATION                500 /*milliseconds */
+#define PHASE2_DURATION                1000 /*milliseconds */
 #define PHASE2_FINAL_SPEED_RPM         0 /* rpm */
-#define PHASE2_FINAL_CURRENT           17436
+#define PHASE2_FINAL_CURRENT           0
 /* Phase 3 */
-#define PHASE3_DURATION                1000 /*milliseconds */
-#define PHASE3_FINAL_SPEED_RPM         1000 /* rpm */
-#define PHASE3_FINAL_CURRENT           17436
+#define PHASE3_DURATION                500 /*milliseconds */
+#define PHASE3_FINAL_SPEED_RPM         0 /* rpm */
+#define PHASE3_FINAL_CURRENT           8718
 /* Phase 4 */
 #define PHASE4_DURATION                1000 /*milliseconds */
-#define PHASE4_FINAL_SPEED_RPM         2000 /* rpm */
-#define PHASE4_FINAL_CURRENT           17436
+#define PHASE4_FINAL_SPEED_RPM         1500 /* rpm */
+#define PHASE4_FINAL_CURRENT           8718
 /* Phase 5 */
-#define PHASE5_DURATION                0 /* milliseconds */
-#define PHASE5_FINAL_SPEED_RPM         2000 /* rpm */
-#define PHASE5_FINAL_CURRENT           17436
+#define PHASE5_DURATION                1000 /* milliseconds */
+#define PHASE5_FINAL_SPEED_RPM         3000 /* rpm */
+#define PHASE5_FINAL_CURRENT           8718
 
-#define ENABLE_SL_ALGO_FROM_PHASE      3
+#define ENABLE_SL_ALGO_FROM_PHASE      1
 
 /* Observer start-up output conditions  */
 #define OBS_MINIMUM_SPEED_RPM          1500
@@ -370,11 +370,11 @@
 #define FEED_FORWARD_CURRENT_REG_ENABLING DISABLE
 #define CONSTANT1_Q                    2110463
 #define CONSTANT1_D                    2110463
-#define CONSTANT2_QD                   7818
+#define CONSTANT2_QD                   5212
 
 /*  Maximum Torque Per Ampere strategy parameters */
 #define MTPA_ENABLING                  DISABLE
-#define IQMAX                          17436
+#define IQMAX                          26154
 #define SEGDIV                         0
 #define ANGC                           {0,0,0,0,0,0,0,0}
 #define OFST                           {0,0,0,0,0,0,0,0}
@@ -398,7 +398,7 @@
  /* #define PFC_ENABLED to enable the PFC */ 
 
 /*** On the fly start-up ***/
-
+#define OTF_STARTUP
 
 
 /*** Speed Feedback detection  ***/

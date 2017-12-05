@@ -299,6 +299,10 @@ static uint8_t FOC_array_head = 0; // Next obj to be executed
 static uint8_t FOC_array_tail = 0; // Last arrived
 #endif
 
+
+uint8_t REQUEST_MOTOR_STOP = 0;
+
+
 /****************************** USE ONLY FOR SDK 4.0 EXAMPLES *************/  
 #if defined(EXAMPLE_SPEEDMONITOR)
    void ARR_TIM5_update(CSPD xCSPD);
@@ -977,6 +981,7 @@ void MCboot(CMCI oMCIList[NBR_OF_MOTORS],CMCT oMCTList[NBR_OF_MOTORS])
 #endif
   
   bMCBootCompleted = 1;
+  REQUEST_MOTOR_STOP = 0;
 }
 
 /**
@@ -2637,7 +2642,24 @@ UDRC_State_t MC_RegularConvState(void)
   */
 void TSK_SafetyTask(void)
 {  
+
 #if defined(SINGLEDRIVE)
+
+//XXX: Need to make sure this works correctly
+State_t temp;  
+    if (REQUEST_MOTOR_STOP){
+      temp = MCI_GetSTMState(GetMCI(0));
+      if (temp == IDLE        ||
+          temp == FAULT_NOW   ||
+          temp == FAULT_OVER  ||
+          temp == ICLWAIT){
+        REQUEST_MOTOR_STOP = 0;
+      }
+      else if (MCI_StopMotor(GetMCI(0))){
+        REQUEST_MOTOR_STOP = 0;
+      }
+    }
+
   
     #if defined(MOTOR_PROFILER)
       SCC_CheckOC_RL(oSCC[M1]);
@@ -2951,6 +2973,11 @@ void TSK_HardwareFaultTask(void)
   PWMC_SwitchOffPWM(oCurrSensor[M2]);
   STM_FaultProcessing(oSTM[M2], MC_SW_ERROR, 0);
 #endif
+}
+
+void stop_motor()
+{
+  REQUEST_MOTOR_STOP = 1;
 }
 
 /******************* (C) COPYRIGHT 2016 STMicroelectronics *****END OF FILE****/

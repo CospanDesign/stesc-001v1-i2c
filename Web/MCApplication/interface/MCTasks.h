@@ -109,6 +109,8 @@ void TSK_DualDriveFIFOUpdate(void *oDrive);
   */
 void TSK_HardwareFaultTask(void);
 
+void stop_motor();
+
 /**
   * @}
   */
